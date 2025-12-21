@@ -38,11 +38,6 @@
     } from "lucide-svelte";
 
 
-
-    const FELLES_OKTER_SHEET_URL = "https://docs.google.com/spreadsheets/d/1x826BqPtWSGNR9_6y30Ph2XIOwDb3FmnUZihLGSdeCQ/export?format=csv";
-
- 
-
     // Login State
     let username = "";
     let password = "";
@@ -51,6 +46,7 @@
     let isLoading = false;
     let isAdmin = false;
     let currentUtoverNavn = "";
+    let currentEditPlanSheet = "";
 
 
     // Felles økter data
@@ -68,6 +64,7 @@
                     loggedIn = true;
                     isAdmin = data.isAdmin;
                     username = data.username || "";
+                    currentEditPlanSheet = data.editPlanSheet || "";  // LEGG TIL DENNE
                     
                     if (data.isAdmin) {
                         // Admin er innlogget, men har ikke valgt bruker ennå
@@ -101,113 +98,12 @@
             });
     }
 
-    // SHA-256 IMPLEMENTASJON
-    function sha256Sync(s: string): string {
-        const K = [
-            0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
-            0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
-            0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7,
-            0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
-            0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152,
-            0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147,
-            0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc,
-            0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-            0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819,
-            0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08,
-            0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f,
-            0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-            0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
-        ];
-        let H = [
-            0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f,
-            0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
-        ];
-
-        const utf8 = new TextEncoder().encode(s);
-        let m: number[] = [];
-        for (let i = 0; i < utf8.length; i++) {
-            m[i >>> 2] |= utf8[i] << (24 - (i % 4) * 8);
-        }
-
-        const mLen = utf8.length * 8;
-        m[mLen >>> 5] |= 0x80 << (24 - (mLen % 32));
-        m[(((mLen + 64) >>> 9) << 4) + 15] = mLen;
-
-        for (let i = 0; i < m.length; i += 16) {
-            const w = new Array(64);
-            let a = H[0],
-                b = H[1],
-                c = H[2],
-                d = H[3],
-                e = H[4],
-                f = H[5],
-                g = H[6],
-                h = H[7];
-
-            for (let t = 0; t < 64; t++) {
-                if (t < 16) {
-                    w[t] = m[i + t];
-                } else {
-                    const s0 =
-                        ((w[t - 15] >>> 7) | (w[t - 15] << 25)) ^
-                        ((w[t - 15] >>> 18) | (w[t - 15] << 14)) ^
-                        (w[t - 15] >>> 3);
-                    const s1 =
-                        ((w[t - 2] >>> 17) | (w[t - 2] << 15)) ^
-                        ((w[t - 2] >>> 19) | (w[t - 2] << 13)) ^
-                        (w[t - 2] >>> 10);
-                    w[t] = (w[t - 16] + s0 + w[t - 7] + s1) >>> 0;
-                }
-
-                const sum1 =
-                    ((e >>> 6) | (e << 26)) ^
-                    ((e >>> 11) | (e << 21)) ^
-                    ((e >>> 25) | (e << 7));
-                const ch = (e & f) ^ (~e & g);
-                const temp1 = (h + sum1 + ch + K[t] + w[t]) >>> 0;
-
-                const sum0 =
-                    ((a >>> 2) | (a << 30)) ^
-                    ((a >>> 13) | (a << 19)) ^
-                    ((a >>> 22) | (a << 10));
-                const maj = (a & b) ^ (a & c) ^ (b & c);
-                const temp2 = (sum0 + maj) >>> 0;
-
-                h = g;
-                g = f;
-                f = e;
-                e = (d + temp1) >>> 0;
-                d = c;
-                c = b;
-                b = a;
-                a = (temp1 + temp2) >>> 0;
-            }
-
-            H[0] = (H[0] + a) >>> 0;
-            H[1] = (H[1] + b) >>> 0;
-            H[2] = (H[2] + c) >>> 0;
-            H[3] = (H[3] + d) >>> 0;
-            H[4] = (H[4] + e) >>> 0;
-            H[5] = (H[5] + f) >>> 0;
-            H[6] = (H[6] + g) >>> 0;
-            H[7] = (H[7] + h) >>> 0;
-        }
-
-        let result = "";
-        for (let i = 0; i < H.length; i++) {
-            result += (H[i] >>> 0).toString(16).padStart(8, "0");
-        }
-        return result;
-    }
-
     // Hovedfunksjon for innlogging
     async function handleLogin() {
         loginError = "";
         isLoading = true;
 
         const plainUser = username.trim().toLowerCase();
-        const userKeyHash = sha256Sync(plainUser);
-        const hashedPassword = sha256Sync(password);
 
         try {
             const response = await fetch('/api/login', {
@@ -216,20 +112,20 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userKeyHash,
-                    hashedPassword,
-                    username: plainUser
+                    username: plainUser,
+                    password: password
                 })
             });
 
             const data = await response.json();
 
-            if (data.success) {
-                loggedIn = true;
-                isAdmin = data.isAdmin;
-                username = data.username;
-                
-                if (!data.isAdmin) {
+        if (data.success) {
+            loggedIn = true;
+            isAdmin = data.isAdmin;
+            username = data.username;
+            currentEditPlanSheet = data.editPlanSheet || "";  
+            
+            if (!data.isAdmin) {
                     await Promise.all([
                         loadWorkoutPlan(data.sheetUrl), 
                         loadFellesOkter()
@@ -257,8 +153,6 @@
         loginError = "";
         isLoading = true;
 
-        const nameHash = sha256Sync(searchName.toLowerCase());
-
         try {
             const response = await fetch('/api/admin-search', {
                 method: 'POST',
@@ -266,8 +160,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    nameHash,
-                    searchName
+                    searchName: searchName
                 })
             });
 
@@ -275,6 +168,7 @@
 
             if (data.success) {
                 currentUtoverNavn = data.searchName;
+                currentEditPlanSheet = data.editPlanSheet || "";  // LEGG TIL DENNE
                 await Promise.all([
                     loadWorkoutPlan(data.sheetUrl), 
                     loadFellesOkter()
@@ -307,6 +201,7 @@
         isLoading = false;
         isAdmin = false;
         currentUtoverNavn = "";
+        currentEditPlanSheet = "";
         workouts = [];
         fellesOkter = [];
         expandedDates.clear();
@@ -394,7 +289,11 @@
     // Last inn felles økter CSV
     async function loadFellesOkter() {
         try {
-            const response = await fetch(FELLES_OKTER_SHEET_URL);
+            // Hent URL fra backend først
+            const urlResponse = await fetch('/api/felles-okter-url');
+            const urlData = await urlResponse.json();
+            
+            const response = await fetch(urlData.url);
             
             if (!response.ok) {
                 console.warn("Kunne ikke laste felles økter fra Google Sheets");
@@ -923,6 +822,21 @@
                                 <div class="px-4 py-2 text-sm font-semibold text-violet-700 border-b border-violet-100">
                                     Dokumenter
                                 </div>
+                                {#if currentEditPlanSheet}
+                                    <button
+                                        on:click={() => {
+                                            window.open(currentEditPlanSheet, '_blank');
+                                            menuOpen = false;
+                                        }}
+                                        class="w-full text-left px-4 py-3 hover:bg-violet-50 transition-colors text-slate-700 font-medium flex items-center gap-2 border-b border-violet-100"
+                                    >
+                                        <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                        {isAdmin && currentUtoverNavn ? `${currentUtoverNavn} treningsplan (Rediger)` : 'Min treningsplan (Rediger)'}
+                                    </button>
+                                {/if}
+
                                 {#each pdfLinks as link}
                                     <button
                                         on:click={() => openPdf(link.url)}

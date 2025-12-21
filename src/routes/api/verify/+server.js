@@ -19,6 +19,7 @@ export async function GET({ cookies }) {
             authenticated: true,
             isAdmin: decoded.isAdmin,
             sheetUrl: decoded.sheetUrl,
+            editPlanSheet: decoded.editPlanSheet,  
             username: decoded.username,
             userKeyHash: decoded.userKeyHash
         });

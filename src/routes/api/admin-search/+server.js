@@ -1,62 +1,81 @@
 import { json } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+
+function sha256(str) {
+    return crypto.createHash('sha256').update(str).digest('hex');
+}
 
 const USER_CREDENTIALS = {
-    "73c16a202d2b86fcfdc37dd70ff565719156493d9e2c4ef6ea752a4ebea3fb3c": {
-        hash: "c9d3b957642e236fd916483d1481ec5522b8b9acd44f6455da891d6721806ee3",
+    "c23ad6f18412014673b2d04794ca038ef6767fe94afe408dffb775362fe07e68": {
+        hash: "6d863b64bafc62018b1c466956eaadc555cbc67a5789cefd4722f741e327d964",
         sheetUrl: "https://docs.google.com/spreadsheets/d/16g9Dj6gGqJdMf4OzF3jfw18bbm7pAaQZSDiszGlH-a0/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/12qskHnbueZihgTY9W0G8Add6-QqXrdur4-8HQebhxNE/edit?usp=sharing",
     },
-    "a6fc525d7fa299d869b8ab2c88f23a7628a6e8a788b9152066b7b6429049e951": {
-        hash: "92f7bd60b336dfe3a254266037f31c6cc146e94140ac462614331e970c3135bc",
+    "cf43e029efe6476e1f7f84691f89c876818610c2eaeaeb881103790a48745b82": {
+        hash: "3bc76a6a8cb1677a34570a65fca1441489ab501af7532e00c610f27d9fc6270b",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1Pi3QHuVMCsAumEnXpiJiEWa6JJpP0mrqFf8RTTyqRdU/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1muO0khOrLokmqQzctLd9soxx1BdC-DujSBf1wE9ttMg/edit?usp=sharing",
     },
-    "9d486bcfeef9ef6ef45ae8f1d67f63fcb0fec64581a67edbc59b4160b28f52a4": {
-        hash: "d909e383f245da1570025ce692d2f50eabc0c316d4a932a3fa5d013b54a0612c",
+    "55579b557896d0ce1764c47fed644f9b35f58bad620674af23f356d80ed0c503": {
+        hash: "8391f25eb7d2949f4b7a9207f6fc94212dfacc86d4c41d85306a75b866f003c8",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1rR3Rq28Z4qvz2NmhcQ3rPtxo0vaDkqftuoye49LfOOY/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1Zet3QXpoyMdZqK_PcyhZmSygKz0wmtxQIMUS92XHVDk/edit?usp=sharing",
     },
-    "52f5d96fa7defd7bcc670a4e94584bdcf799aadda0b5fe0fb399d2942290f8cb": {
-        hash: "52c3c48ddb9239c32e2863295ae2a346df21062f23edb6a23adbea4742026730",
+    "4e7c524ef47cc92470c4beb25253005553f9668108f7ed26f2f8e7c84a63ef57": {
+        hash: "745f44990eeb9c23f4f293fcc70466307c3579e4c2d2eb7d2caea054c4e7d9dc",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1hDBeNcskUDIkPvEM-uWixS1ACuEqmDQINR3l4Fn1IXE/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1ChVV2eDSV4T5v5-z_xo7ClsT97-jhGmYWDDmaeiapRc/edit?usp=sharing",
     },
-    "bdb31133df3ef9606d5cd15be403c7d2a3b93ee37954fae4f0c73d8bb390402e": {
-        hash: "19f66012993b9e164bfe692ece9b6d38b50b06c173ae3cea2645b65590e38ccb",
+    "bb6b24bf13999272b27006f7711965f77861a326a30b43b9b1852a500ad68ac7": {
+        hash: "af9d54ad9a4f1de490b9ab9f8a92bd7fb373145c23c13b18708533c22cecf0c4",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1opK9rNmWS9pbADnllMAsXtIB_DuhC_OLHv3EwkBWAk8/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1mbzoviLpWKu1OHJ74oSbWtYCrFb3AVyYMuVJpA2Gbhk/edit?usp=sharing",
     },
-    "3521ecc80114799253f9c11590417a44fe12e4f7664beea74665fd1d6be1dfbc": {
-        hash: "78cb4ae6333525a2da653d975e352243a051a1fcfd21b7b97aeb8582eaa11605",
+    "744292c9f3d49b0159ff487366857d4c0ebd4c5e9eb77264d2b6e42477cee3fd": {
+        hash: "d890a9b3d7ad22a2923aaa5ab3350fedbce6e2d487bc69427446ecd7d390b5d0",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1RGNvnnCIpdsBiNYd_dYTVWjm1kS2ToP-YISKUGZYaxk/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1rtSnO_f5OsR82wnOpmK_OzkqdamfNmdS4Kb26qBagSk/edit?usp=sharing",
     },
-    "8fbb21f6c4271e9ebd5f59095b576e30d1859278d2b0b4688c2b89060ee788df": {
-        hash: "5a2e47eec0de18abbb9b705a39eaaf2177047db41297a09202ea31889e3c545c",
+    "b025079c90813d4669136b2ed07512204ee05522ba3e647935f1a88daf00fd43": {
+        hash: "addc8429adebe661f7539e7e7ebde318ef2ed2810f2a30d36ce70f130afb24f4",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1X6Xg-Wr11LOsMvbDOg7b8F8LB9CeKWmn5tWlN3fGJLk/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1CDt3N7MT7iZl-K92Bm7l094W2fOQ5XtOpVf9_namZGE/edit?usp=sharing",
     },
-    "8bbae86e930057698e451b4e7c50411077d0eba4f60d72c6ac93ad4ece44e183": {
-        hash: "f4b73b7da041a26825d9d5566b468b1cf2333e55fa0051ab76e05777962cfe33",
+    "7db9d8e2af6fff877ca5878135e99c758ec72bf2ec34dd287bb470203a416560": {
+        hash: "7a57201147a208f81a0c07a8656b1f96d184eb9fec337f9f4aacb9e70d5c092e",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1Esgt4ZdoE5f9mYL6OdjYA89jgZLrWso4Kf-fTBxDirU/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1y0sAYEJLbeSVHo0Rm2mmEODu0pA81kRiIbfc_lmuM6M/edit?usp=sharing",
     },
-    "99d9d8db45cd4afad1a4995074e31ee38c79b4becc138315d0a4c0777c389978": {
-        hash: "bef3523a54f1204786583e293d63b0d2ad8eccf8333ea0b8a87463c07702ec85",
+    "9a56829452acf473c7c9c6c234aa7c88f0cd03342e15a7d41436dd2ec037f9b3": {
+        hash: "75dbb91b5c7c13b386a98adb48b0bc6792baa5b4aed26013529bab2243db73ed",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1715BYi3BZqy-qVZdBh3rlC1iRl2ORXpEb5S5zPbiOko/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1OZYEN7Qj4aZn7NgW_fQlMEjW1Omy8G5X0PuzBkXw-XU/edit?usp=sharing",
     },
-    "7f118f9cc2961f740bdd1922031a59a9b9c981aff5a676c85d1a1be7c4ff7ff5": {
-        hash: "2ca56d9ee5e758a4c77eaf7884f277a362e3084a331dbee87b8dd1abf8e3ec17",
+    "0ab0265842a1c7d13851133349d241e2a8254a56bef1d4750eab7bc620158a65": {
+        hash: "e1c7acc3614ce9607b6d5112a29fead5fa288ba7b9e0d8451505f0f3fbb39c42",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1_C2dH6nMPxVmXn_x8rg7Ew0ncghdkC2PnHHhAA0jHOs/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1yu7ae98PoL6k8W9rwhvbsPQNTRovGj8hlshkuyPlgOk/edit?usp=sharing",
     },
-    "66942cd1be80acc6f083e3bc63022d7267b9ae4c2e34e3a667774297a3f21d1d": {
-        hash: "6c093fed42ee8dc35b15547694c5b18c2eb578f39a660ff2ce04189889952aa4",
+    "b21ec07effd3fe307782e2a1782ae771e601b303cef1548723a76c539f98f383": {
+        hash: "a8ee8a9cbeb5e6465e25cd2272a6fbade33a1b1b3e93863b78bcfda9efcd0756",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1S52QH21wq0IH-LKUgwZ9PIaRULaUIQADtYXzGzxiuAQ/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1Xn_h9_H0b7UWCogxx-iW3pvhRP1j0fozzS06jiOnInc/edit?usp=sharing",
     },
-    "412437af1223b40770c9cb7a14f23c7ad8bad1fa9541518ccc830e958e9e6de4": {
-        hash: "d4b3ab3fa2f4c9dcb45a3a5ce6586ceae6b33b667843678c5b81ebd834c4225f",
+    "f5a1971c2ef02a5ab2263f20895b14e7ac1607d21d28805ca8a7ed31ef802364": {
+        hash: "aed945bb882e87048fc7ce03dc6a42806a86b00a3a8c19a9c1993de55ef16acd",
         sheetUrl: "https://docs.google.com/spreadsheets/d/16MiHhFJ-d5wo_aD7-Z2b55-05hWIH5BzeZJQMA134ms/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1fmrOhZFoZ7mHTnGgtJOrgcwY1LN-SWEu1ju-dyEGMP4/edit?usp=sharing",
     },
-    "fbe0c7642bb213eb87a4ef86f38541bda95179173d0290af8b2ec615f11faae4": {
-        hash: "072ed2a333645f10eca78200ab476b5d62bee0a82cb82f2a5abae701828598c3",
+    "ce11bb4c2b13a52f6586db347a43678090a75e2011c7dc0d12caac4b16244447": {
+        hash: "500d220e03d172928c667670df3fa79093f6d0631face13ba9e289870a322706",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1tA7eFUyN800TyN1K6gWWqe3TzUO0tTGtHQcWB7TR0io/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1tdxOPz5Pq7fMZLRhP07mSA42uaxL7HzGRasowE8cLsU/edit?usp=sharing",
     },
-    "44a777ead2a1f80d572dddcc84dbea75cd7c4e4ba08afab53c324a325ca6c17b": {
-        hash: "2c9aadacad017c35b9c5395b7e9cf8bcce8d726f2c1cc37f1540f997a72f79f4",
+    "9a105749cfcbac2e07d7640697861f62dfcc7c02bc24519e9c287431bc493f9d": {
+        hash: "06a61771d162b6ff107a085da52616b8d34e0ed95c0a1e21d9247f8bcc970141",
         sheetUrl: "https://docs.google.com/spreadsheets/d/1m2R0krMxtVPIyp_YWATO40ysm4LkJJheN9L3U-J-HOs/export?format=csv",
+        editPlanSheet: "https://docs.google.com/spreadsheets/d/1b10_23Y5fGQM9gdSUSUQI52uAfs4ezfgdZ_DpbbHGFw/edit?usp=sharing",
     },
 };
 
@@ -83,7 +102,8 @@ export async function POST({ request, cookies }) {
             }, { status: 403 });
         }
         
-        const { nameHash, searchName } = await request.json();
+        const { searchName } = await request.json();
+        const nameHash = sha256(searchName.toLowerCase());
         const user = USER_CREDENTIALS[nameHash];
         
         if (!user) {
@@ -96,6 +116,7 @@ export async function POST({ request, cookies }) {
         return json({ 
             success: true, 
             sheetUrl: user.sheetUrl,
+            editPlanSheet: user.editPlanSheet,
             searchName
         });
         
