@@ -1,1859 +1,964 @@
-<script lang="ts">
-    import { tick } from "svelte";
-    import Papa from "papaparse";
-    import {
-        parse,
-        format,
-        startOfDay,
-        addDays,
-        subDays,
-        addMonths,
-        subMonths,
-        startOfMonth,
-        endOfMonth,
-        getDay,
-        isSameDay,
-        parseISO,
-        isWithinInterval,
-    } from "date-fns";
-    import { nb } from "date-fns/locale";
-    import {
-        Calendar,
-        LineChart,
-        ChevronLeft,
-        ChevronRight,
-        Clock,
-        Zap,
-        Dumbbell,
-        BookOpen,
-        Timer,
-        Heart,
-        BatteryCharging,
-        User,
-        Lock,
-        ChevronDown,
-        ChevronUp,
-        Users,
-        Video,
-    } from "lucide-svelte";
+<script>
+  import { onMount } from 'svelte';
+  
+  let currentSection = $state('home');
+  let selectedMap = $state(null);
 
+  const navigation = [
+    { id: 'omRennet', label: 'Om rennet' },
+    { id: 'hytter', label: 'Hytter' },
+    { id: 'loypene', label: 'Løypene' },
+    { id: 'smoreteam', label: 'Smøreteam' },
+    { id: 'rennprogram', label: 'Rennprogram' },
+    { id: 'praktisk', label: 'Praktisk info' }
+  ];
 
-    // Login State
-    let username = "";
-    let password = "";
-    let loggedIn = false;
-    let loginError = "";
-    let isLoading = false;
-    let isAdmin = false;
-    let currentUtoverNavn = "";
-    let currentEditPlanSheet = "";
-
-
-    // Felles økter data
-    let fellesOkter: Array<{ dato: string; okt: string; utovere: string[] }> =
-        [];
-    let expandedDates = new Set<string>();
-
-    // Initial State Check og Auto-Login
-    if (typeof window !== "undefined") {
-        isLoading = true;
-        fetch('/api/verify')
-            .then(res => res.json())
-            .then(async (data) => {
-                if (data.authenticated) {
-                    loggedIn = true;
-                    isAdmin = data.isAdmin;
-                    username = data.username || "";
-                    currentEditPlanSheet = data.editPlanSheet || "";  // LEGG TIL DENNE
-                    
-                    if (data.isAdmin) {
-                        // Admin er innlogget, men har ikke valgt bruker ennå
-                        isLoading = false;
-                    } else {
-                        // Vanlig bruker - last data
-                        await Promise.all([
-                            loadWorkoutPlan(data.sheetUrl), 
-                            loadFellesOkter()
-                        ]);
-                        isLoading = false;
-                        
-                        // Trigger view refresh
-                        const finalView = view;
-                        const tempView = finalView === VIEWS.OVERVIEW 
-                            ? VIEWS.CALENDAR 
-                            : VIEWS.OVERVIEW;
-                        view = tempView;
-                        await tick();
-                        view = finalView;
-                        await tick();
-                        goToToday();
-                    }
-                } else {
-                    isLoading = false;
-                }
-            })
-            .catch((error) => {
-                console.error('Verify error:', error);
-                isLoading = false;
-            });
+  const hytter = [
+    {
+      title: 'HYTTE 1',
+      responsible: 'Anders Øpstad',
+      location: 'Adresse: Kvikndølåsen 13',
+      athletes: ['Anna', 'Helene', 'Emil', 'Julia', 'Nora', '+ foreldre']
+    },
+    {
+      title: 'HYTTE 2',
+      responsible: 'Jens Erik Mortensen',
+      location: 'Adresse: Savalodden 49',
+      athletes: ['Emma', 'Alma', 'Lilje', 'Julie', '+ foreldre']
+    },
+    {
+      title: 'HYTTE 3',
+      responsible: 'Nina Windju Christiansen',
+      location: 'Koordinater: 6917426N 267361Ø',
+      athletes: ['Adrian', 'Knut-Eirik', 'Markus', 'Nathaniel', 'Storm', '+ foreldre']
+    },
+    {
+      title: 'HYTTE 4',
+      responsible: 'Thomas Tobro Wøien',
+      location: 'Adresse: Savalbotn 67',
+      athletes: ['Ida', 'Johanne', 'Ine', '+ foreldre']
+    },
+    {
+      title: 'HYTTE 5',
+      responsible: 'Audun Foss Knudsen',
+      location: 'Adresse: Klevan nord 69',
+      athletes: ['Halvor', 'Oscar', 'Sondre', 'Syver', '+ foreldre']
     }
+  ];
 
-    // Hovedfunksjon for innlogging
-    async function handleLogin() {
-        loginError = "";
-        isLoading = true;
-
-        const plainUser = username.trim().toLowerCase();
-
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: plainUser,
-                    password: password
-                })
-            });
-
-            const data = await response.json();
-
-        if (data.success) {
-            loggedIn = true;
-            isAdmin = data.isAdmin;
-            username = data.username;
-            currentEditPlanSheet = data.editPlanSheet || "";  
-            
-            if (!data.isAdmin) {
-                    await Promise.all([
-                        loadWorkoutPlan(data.sheetUrl), 
-                        loadFellesOkter()
-                    ]);
-                }
-            } else {
-                loginError = data.error || "Innlogging feilet.";
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            loginError = "Kunne ikke koble til server.";
-        } finally {
-            isLoading = false;
-        }
+  // Oppdatert med mapUrl
+  const loypene = [
+    {
+      title: 'Sprint',
+      distance: '1027 m',
+      stilart: 'Klassisk',
+      mapUrl: '/sprint-kart.png'
+    },
+    {
+      title: 'Skicross',
+      distance: 'Ikke oppgitt',
+      stilart: 'Fristil',
+      mapUrl: '/skicross-kart.png'
+    },
+    {
+      title: 'Distanse 5km',
+      distance: '5250 m',
+      stilart: 'Fristil',
+      mapUrl: '/5km-kart.png'
+    },
+    {
+      title: 'Distanse 7,5km',
+      distance: '7295 m',
+      stilart: 'Fristil',
+      mapUrl: '/7km-kart.png'
+    },
+    {
+      title: 'Stafett jenter',
+      distance: 'Ikke oppgitt',
+      stilart: '2x Fristil + 2x Klassisk',
+      mapUrl: '/stafettJenter-kart.png'
+    },
+    {
+      title: 'Stafett gutter',
+      distance: 'Ikke oppgitt',
+      stilart: '2x Fristil + 2x Klassisk',
+      mapUrl: '/stafettGutter-kart.png'
     }
+  ];
 
-    // Søk etter utøver basert på navn (admin)
-    async function searchUtoverByName() {
-        const searchName = currentUtoverNavn.trim();
-        if (!searchName) {
-            loginError = "Skriv inn et navn";
-            return;
-        }
-
-        loginError = "";
-        isLoading = true;
-
-        try {
-            const response = await fetch('/api/admin-search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    searchName: searchName
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                currentUtoverNavn = data.searchName;
-                currentEditPlanSheet = data.editPlanSheet || "";  // LEGG TIL DENNE
-                await Promise.all([
-                    loadWorkoutPlan(data.sheetUrl), 
-                    loadFellesOkter()
-                ]);
-                selectedDate = null;
-                view = VIEWS.OVERVIEW;
-            } else {
-                loginError = data.error || `Finner ingen utøver med navn: ${searchName}`;
-            }
-        } catch (error) {
-            console.error('Search error:', error);
-            loginError = "Kunne ikke koble til server.";
-        } finally {
-            isLoading = false;
-        }
+  // Smøreteam organisert per dag
+  const smoreDager = [
+    {
+      dag: 'Torsdag',
+      personell: [
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
+        { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264' },
+        { navn: 'Truls Eirik Holm', rolle: 'Logistikk', tlf: '913 28 300' }
+      ]
+    },
+    {
+      dag: 'Fredag',
+      personell: [
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
+        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950' },
+        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058' },
+        { navn: 'Harald Mølmen-Nertun', rolle: 'Logistikk', tlf: '909 37 338' },
+        { navn: 'Siri Bergsmark', rolle: 'Logistikk', tlf: '411 88 151' }
+      ]
+    },
+    {
+      dag: 'Lørdag',
+      personell: [
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
+        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950' },
+        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058' },
+        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919' },
+        { navn: 'Martin Hesselius', rolle: 'Logistikk', tlf: '473 42 463' }
+      ]
+    },
+    {
+      dag: 'Søndag',
+      personell: [
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
+        { navn: 'Glenn Phillips', rolle: 'Logistikk', tlf: '464 02 425' }
+      ]
     }
+  ];
 
-    // Håndterer utlogging
-    async function handleLogout() {
-        try {
-            await fetch('/api/logout', { method: 'POST' });
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-        
-        loggedIn = false;
-        username = "";
-        password = "";
-        loginError = "";
-        isLoading = false;
-        isAdmin = false;
-        currentUtoverNavn = "";
-        currentEditPlanSheet = "";
-        workouts = [];
-        fellesOkter = [];
-        expandedDates.clear();
-        selectedDate = null;
-        calendarCursor = startOfMonth(new Date());
-        view = VIEWS.OVERVIEW;
+  const getDagNavn = () => {
+    const dager = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
+    const idag = new Date().getDay(); // 0 = Søndag, 1 = Mandag, osv.
+    
+    if (idag >= 1 && idag <= 4) {
+      return 'Torsdag';
     }
+    
+    return dager[idag];
+  };
 
-    // CSV-lasting
-    async function loadWorkoutPlan(sheetUrl: string) {
-        try {
-            // Bruk sheetUrl direkte istedenfor lokal fil
-            const response = await fetch(sheetUrl);
-            
-            if (!response.ok) {
-                loginError = `Kunne ikke laste regneark. Sjekk at lenken er riktig og at regnearket er delt som "Alle med lenken kan se".`;
-                return;
-            }
+  let valgtDag = $state(getDagNavn());
 
-            const csvText = await response.text();
+  let menuOpen = $state(false);
 
-            Papa.parse(csvText, {
-                header: false,
-                skipEmptyLines: true,
-                complete: (result) => {
-                    const rows = result.data as string[][];
-                    if (rows.length < 2) return;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+  }
 
-                    const header = rows[0].map((h) => h.trim().toLowerCase());
-                    const parsed: Workout[] = [];
+  let visHeleTekstenOmRennet = $state(false);
 
-                    const idxDato = header.findIndex((h) => h.includes("dato"));
-                    const idxHva1 = header.findIndex((h) =>
-                        h.includes("hva økt 1"),
-                    );
-                    const idxTid1 = header.findIndex((h) => h === "tid");
-                    const idxHva2 = header.findIndex((h) =>
-                        h.includes("hva økt 2"),
-                    );
-                    const idxTid2 = header.findIndex(
-                        (h, i) => h === "tid" && i > idxTid1,
-                    );
-                    const idxKommentar = header.findIndex((h) =>
-                        h.includes("kommentar"),
-                    );
-
-                    for (let i = 1; i < rows.length; i++) {
-                        const row = rows[i];
-                        const dato = parseDate(row[idxDato]);
-                        const kommentar =
-                            idxKommentar >= 0
-                                ? (row[idxKommentar]?.trim() ?? "")
-                                : "";
-
-                        if (row[idxHva1]) {
-                            parsed.push({
-                                date: dato,
-                                title: row[idxHva1].trim(),
-                                durationMin: toMin(row[idxTid1]),
-                                description: kommentar,
-                            });
-                        }
-
-                        if (idxHva2 >= 0 && row[idxHva2]) {
-                            const tid2 = idxTid2 >= 0 ? row[idxTid2] : "";
-                            parsed.push({
-                                date: dato,
-                                title: row[idxHva2].trim(),
-                                durationMin: toMin(tid2),
-                                description: kommentar,
-                            });
-                        }
-                    }
-
-                    workouts = parsed.filter((w) => w.date);
-                },
-            });
-        } catch (e) {
-            console.error("Feil ved lasting av plan:", e);
-            loginError =
-                "En uventet feil oppstod under lasting av treningsplanen. Sjekk at regnearket er delt offentlig.";
-        }
+  function toggleTekstOmRennet() {
+    if (visHeleTekstenOmRennet) {
+      scrollToSection('omRennet');
     }
+    visHeleTekstenOmRennet = !visHeleTekstenOmRennet;
+  }
 
-    // Last inn felles økter CSV
-    async function loadFellesOkter() {
-        try {
-            // Hent URL fra backend først
-            const urlResponse = await fetch('/api/felles-okter-url');
-            const urlData = await urlResponse.json();
-            
-            const response = await fetch(urlData.url);
-            
-            if (!response.ok) {
-                console.warn("Kunne ikke laste felles økter fra Google Sheets");
-                return;
-            }
-
-            const csvText = await response.text();
-
-            Papa.parse(csvText, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (result) => {
-                    const rows = result.data as any[];
-                    const parsed: Array<{
-                        dato: string;
-                        okt: string;
-                        utovere: string[];
-                    }> = [];
-
-                    rows.forEach((row) => {
-                        const dato = row.Dato || row.dato || row.DATO;
-                        const okt = row.Økt || row.økt || row.ØKT || row.Okt;
-                        const utovere =
-                            row.Utøvere ||
-                            row.utøvere ||
-                            row.UTØVERE ||
-                            row.Utovere;
-
-                        if (dato && okt && utovere) {
-                            const parsedDato = parseDate(dato);
-                            const utovereList = utovere
-                                .split(",")
-                                .map((n: string) => n.trim())
-                                .filter((n: string) => n.length > 0);
-
-                            if (parsedDato && utovereList.length > 0) {
-                                parsed.push({
-                                    dato: parsedDato,
-                                    okt: okt.trim(),
-                                    utovere: utovereList,
-                                });
-                            }
-                        }
-                    });
-
-                    fellesOkter = parsed;
-                },
-            });
-        } catch (e) {
-            console.error("Feil ved lasting av felles økter:", e);
-        }
+  let visHeleTekstenRensSki = $state(false);
+  
+  function toggleTekstRensSki() {
+    if (visHeleTekstenRensSki) {
+      scrollToSection('smoreteam');
     }
+    visHeleTekstenRensSki = !visHeleTekstenRensSki;
+  }   
 
-    // Hjelpefunksjon for å finne felles utøvere for en spesifikk økt
-    function getFellesUtovere(date: string, sessionTitle: string): string[] {
-        const currentUser = isAdmin
-            ? currentUtoverNavn.trim()
-            : username.trim();
+  function closeMenuAndScroll(sectionId) {
+    menuOpen = false;
+    scrollToSection(sectionId);
+  }
 
-        if (!currentUser || !sessionTitle) {
-            return [];
-        }
-
-        const matching = fellesOkter.filter(
-            (fo) =>
-                fo.dato === date &&
-                fo.okt.toLowerCase() === sessionTitle.toLowerCase(),
-        );
-
-        const allUtovere = new Set<string>();
-        matching.forEach((fo) => {
-            const hasUser = fo.utovere.some(
-                (u) => u.toLowerCase() === currentUser.toLowerCase(),
-            );
-
-            if (hasUser) {
-                fo.utovere.forEach((u) => {
-                    if (u.toLowerCase() !== currentUser.toLowerCase()) {
-                        allUtovere.add(u);
-                    }
-                });
-            }
-        });
-
-        return Array.from(allUtovere).sort();
+  function scrollToSection(sectionId) {
+    currentSection = sectionId;
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
 
-    // Toggle funksjon for dropdown
-    function toggleExpanded(date: string) {
-        if (expandedDates.has(date)) {
-            expandedDates.delete(date);
-        } else {
-            expandedDates.add(date);
+  // Funksjon for å åpne kart-modal
+  function openMap(url) {
+    selectedMap = url;
+  }
+
+  // Funksjon for å lukke kart-modal
+  function closeMap() {
+    selectedMap = null;
+  }
+  
+  onMount(() => {
+    const handleScroll = () => {
+      const sections = navigation.map(nav => document.getElementById(nav.id));
+      const scrollPosition = window.scrollY + 100;
+      
+      // Sjekk om vi er helt på toppen
+      if (window.scrollY < 100) {
+        currentSection = 'home';
+        return;
+      }
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i] && sections[i].offsetTop <= scrollPosition) {
+          currentSection = navigation[i].id;
+          break;
         }
-        expandedDates = expandedDates;
-    }
-
-    // Typer og visninger
-    type Workout = {
-        date: string;
-        title: string;
-        durationMin?: number;
-        description?: string;
+      }
     };
-
-    const VIEWS = {
-        OVERVIEW: "overview",
-        CALENDAR: "calendar",
-        TECHNIQUE: "technique",
-    } as const;
-    type View = (typeof VIEWS)[keyof typeof VIEWS];
-    let view: View = VIEWS.OVERVIEW;
-
-    let workouts: Workout[] = [];
-    let today = startOfDay(new Date());
-    let selectedDate: Date | null = null;
-    let calendarCursor = startOfMonth(new Date());
-    let windowMode: "next" | "prev" = "next";
-
-    // Hjelpefunksjoner
-    function toMin(t: string): number {
-        if (!t) return 0;
-        const [h, m] = t.split(":").map((x) => parseInt(x) || 0);
-        return h * 60 + m;
-    }
-
-    function formatTime(mins: number): string {
-        if (!mins) return "";
-        const h = Math.floor(mins / 60);
-        const m = mins % 60;
-        if (h > 0 && m > 0) return `${h}t ${m}min`;
-        if (h > 0) return `${h}t`;
-        if (m > 0) return `${m}min`;
-        return "";
-    }
-
-    function getWorkoutInfo(title: string) {
-        const lower = title.toLowerCase();
-        if (lower.includes("intervall"))
-            return {
-                icon: Timer,
-                color: "bg-red-100 text-red-700",
-                iconBg: "bg-red-100",
-                iconColor: "text-red-700",
-                label: "Intervall",
-                italic: false,
-            };
-        const isHardKeyword =
-            lower.includes("motbakkeløp") ||
-            lower.includes("sprint") || 
-            lower.includes("sprintøkt") ||
-            lower.includes("distanseøkt");
-        const isRace = /(rennet|renn(?!forbered))/u.test(lower);
-        if (isHardKeyword || isRace) {
-            return {
-                icon: Timer,
-                color: "bg-red-100 text-red-700",
-                iconBg: "bg-red-100",
-                iconColor: "text-red-700",
-                label: "Hardt",
-                italic: false,
-            };
-        }
-
-        if (lower.includes("hvile"))
-            return {
-                icon: BatteryCharging,
-                color: "bg-green-100 text-green-800",
-                iconBg: "bg-green-100",
-                iconColor: "text-green-800",
-                label: "Hvile",
-                italic: false,
-            };
-        if (lower.includes("langtur"))
-            return {
-                icon: Heart,
-                color: "bg-cyan-100 text-cyan-800",
-                iconBg: "bg-cyan-100",
-                iconColor: "text-cyan-800",
-                label: "Langtur i1",
-                italic: false,
-            };
-        if (lower.includes("hurtighet"))
-            return {
-                icon: Zap,
-                color: "bg-slate-100 text-violet-600 border border-slate-200",
-                label: "Hurtighet",
-                italic: false,
-            };
-        if (lower.includes("teknikk"))
-            return {
-                icon: BookOpen,
-                color: "bg-slate-100 text-violet-600 border border-slate-200",
-                label: "Teknikk",
-                italic: false,
-            };
-        if (lower.includes("styrke"))
-            return {
-                icon: Dumbbell,
-                color: "bg-yellow-100 text-yellow-800",
-                iconBg: "bg-yellow-100",
-                iconColor: "text-yellow-800",
-                label: "Styrke",
-                italic: false,
-            };
-        if (lower.includes("rennforberedende"))
-            return {
-                icon: Heart,
-                color: "bg-slate-100 text-violet-600 border border-slate-200",
-                label: "Forberedelser",
-                italic: false,
-            };
-        return {
-            icon: Heart,
-            color: "bg-slate-100 text-violet-600 border border-slate-200",
-            label: "Rolig i1",
-            italic: false,
-        };
-    }
-
-
-    function parseDate(str: string) {
-        if (!str) return "";
-        const clean = str.trim().toLowerCase();
-        
-        // Prøv først å parse med fullt år (dd.MM.yyyy format)
-        const parts = clean.split(".");
-        if (parts.length >= 3) {
-            const day = parts[0].padStart(2, "0");
-            const month = parts[1].padStart(2, "0");
-            const year = parts[2].trim();
-            
-            const parsed = parse(
-                `${day}.${month}.${year}`,
-                "dd.MM.yyyy",
-                new Date(),
-                { locale: nb },
-            );
-            
-            if (!isNaN(parsed.getTime())) {
-                return format(startOfDay(parsed), "yyyy-MM-dd");
-            }
-        }
-        
-        // Fallback: Prøv å parse med månedsnavn (d. MMMM format)
-        const cleanWithSpace = clean.replace(/(\d+)\.(\p{L}+)/u, "$1. $2");
-        const today = new Date();
-        const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth();
-        
-        let parsed = parse(
-            `${cleanWithSpace} ${currentYear}`,
-            "d. MMMM yyyy",
-            new Date(),
-            { locale: nb },
-        );
-        
-        if (isNaN(parsed.getTime())) {
-            // Prøv dd.MM format uten år
-            if (parts.length >= 2) {
-                const day = parts[0].padStart(2, "0");
-                const month = parts[1].padStart(2, "0");
-                parsed = parse(
-                    `${day}.${month}.${currentYear}`,
-                    "dd.MM.yyyy",
-                    new Date(),
-                    { locale: nb },
-                );
-            }
-        }
-        
-        if (isNaN(parsed.getTime())) return "";
-        
-        const parsedMonth = parsed.getMonth();
-        
-        // Sesonglogikk: Mai (4) til April (3) neste år
-        if (currentMonth >= 4) {
-            if (parsedMonth <= 3) {
-                parsed = new Date(currentYear + 1, parsedMonth, parsed.getDate());
-            }
-        } else {
-            if (parsedMonth >= 4) {
-                parsed = new Date(currentYear - 1, parsedMonth, parsed.getDate());
-            }
-        }
-        
-        return format(startOfDay(parsed), "yyyy-MM-dd");
-    }
-
-    function endOfDayIncl(d: Date) {
-        return addDays(startOfDay(d), 1);
-    }
-
-    // Dato-logikk
-    $: activeDate = selectedDate ? selectedDate : today;
-    $: activeIso = format(activeDate, "yyyy-MM-dd");
-    $: activeWorkouts = workouts.filter((w) => w.date === activeIso);
-    $: windowDates =
-        windowMode === "next"
-            ? { start: addDays(activeDate, 1), end: addDays(activeDate, 6) }
-            : { start: subDays(activeDate, 7), end: subDays(activeDate, 1) };
-
-    $: windowWorkouts = workouts
-        .filter((w) => {
-            const d = parseISO(w.date);
-            return (
-                !isSameDay(d, activeDate) &&
-                isWithinInterval(d, {
-                    start: startOfDay(windowDates.start),
-                    end: endOfDayIncl(windowDates.end),
-                })
-            );
-        })
-        .sort((a, b) => {
-            return windowMode === ("prev" as typeof windowMode)
-                ? b.date.localeCompare(a.date)
-                : a.date.localeCompare(b.date);
-        });
-
-    // Reaktiv blokk for å sikre at felles utøvere oppdateres
-    $: {
-        if (username.trim() && fellesOkter.length > 0 && loggedIn) {
-            expandedDates = expandedDates;
-        }
-    }
-
-    // Kalender
-    function changeMonth(dir: "next" | "prev") {
-        calendarCursor =
-            dir === "next"
-                ? addMonths(calendarCursor, 1)
-                : subMonths(calendarCursor, 1);
-    }
-
-    $: {
-        const monthStart = startOfMonth(calendarCursor);
-        const monthEnd = endOfMonth(calendarCursor);
-        const startWeekday = (getDay(monthStart) + 6) % 7;
-        const totalDays = monthEnd.getDate();
-
-        days = [];
-        for (let i = 0; i < startWeekday; i++) days.push(null);
-        for (let d = 0; d < totalDays; d++) days.push(addDays(monthStart, d));
-    }
-
-    let days: (Date | null)[] = [];
-
-    function selectDay(d: Date) {
-        selectedDate = startOfDay(d);
-        view = VIEWS.OVERVIEW;
-    }
-
-    function goToToday() {
-        selectedDate = null;
-        calendarCursor = startOfMonth(new Date());
-        view = VIEWS.OVERVIEW;
-    }
-
-    function groupByDate(list: Workout[]) {
-        const map = new Map<string, Workout[]>();
-        list.forEach((w) => {
-            if (!map.has(w.date)) map.set(w.date, []);
-            map.get(w.date)!.push(w);
-        });
-        return Array.from(map.entries()).map(([date, sessions]) => ({
-            date,
-            sessions,
-        }));
-    }
-
-    $: viewTransform =
-        view === VIEWS.CALENDAR ? "translateX(100%)" : "translateX(0)";
-    $: isCalendarView = view === VIEWS.CALENDAR;
-
-    // Hamburgermeny state
-    let menuOpen = false;
-
-    // PDF-lenker - tilpass disse til dine egne filer
-    const pdfLinks = [
-        { title: "Styrke m/vekter", url: "/pdf/StyrkeMedVekter.pdf" },
-        { title: "Styrke u/vekter", url: "/pdf/StyrkeUtenVekter.pdf" },
-        { title: "Styrke vinter", url: "/pdf/StyrkeVinter.pdf" },
-        { title: "Intensitetssoner", url: "/pdf/Intensitessoner.pdf" },
-    ];
-
-    function toggleMenu() {
-        menuOpen = !menuOpen;
-    }
-
-    function openPdf(url: string) {
-        window.open(url, '_blank');
-        menuOpen = false;
-    }
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 </script>
 
-{#if !loggedIn}
-    <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-95 p-4"
-    >
-        <div
-            class="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl transition-all duration-500 ease-in-out transform scale-100"
-        >
-            <h2 class="mb-6 text-center text-3xl font-bold text-violet-700">
-                Treningsplan
-            </h2>
+<svelte:head>
+  <title>Savalen 2026 - Hovedlandsrennet</title>
+</svelte:head>
 
-            <div class="mb-4">
-                <label
-                    for="username"
-                    class="mb-2 flex items-center text-sm font-medium text-gray-700"
-                >
-                    <User class="mr-2 h-4 w-4" /> Brukernavn
-                </label>
-                <input
-                    id="username"
-                    type="text"
-                    bind:value={username}
-                    disabled={isLoading}
-                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-lg focus:border-violet-500 focus:ring-violet-500 disabled:bg-gray-100"
-                />
-            </div>
+{#if selectedMap}
+<div class="fixed inset-0 z-[100] bg-[#1e3a5f]/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+  <button 
+    onclick={closeMap}
+    class="absolute inset-0 w-full h-full cursor-default"
+    aria-label="Lukk kartvisning"
+  ></button>
+  
+  <div class="relative w-full max-w-5xl bg-white rounded-lg p-2 shadow-2xl">
+    <button onclick={closeMap} class="absolute -top-12 right-0 text-white hover:text-orange-400 text-lg font-bold flex items-center gap-2">
+      LUKK
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+    </button>
+    <img src={selectedMap} alt="Løypekart" class="w-full h-auto rounded object-contain max-h-[85vh]" />
+  </div>
+</div>
+{/if}
 
-            <div class="mb-6">
-                <label
-                    for="password"
-                    class="mb-2 flex items-center text-sm font-medium text-gray-700"
-                >
-                    <Lock class="mr-2 h-4 w-4" /> Passord
-                </label>
-                <input
-                    id="password"
-                    type="password"
-                    bind:value={password}
-                    disabled={isLoading}
-                    on:keydown={(e) => {
-                        if (e.key === "Enter") handleLogin();
-                    }}
-                    class="w-full rounded-xl border border-gray-300 px-4 py-3 text-lg focus:border-violet-500 focus:ring-violet-500 disabled:bg-gray-100"
-                />
-            </div>
-
-            {#if loginError}
-                <div
-                    class="mb-4 rounded-lg bg-red-100 p-3 text-sm font-medium text-red-700"
-                >
-                    {loginError}
-                </div>
-            {/if}
-
+<div class="min-h-screen bg-gray-50">
+  <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm shadow-md z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+<button
+  onclick={() => scrollToSection('home')}
+  class="h-10 flex items-center focus:outline-none"
+  aria-label="Gå til toppen"
+>
+  <img
+    src="/AskerSkiklubb.svg"
+    alt="Asker Skiklubb HL 2026"
+    class="h-full w-auto"
+  />
+</button>
+        <!-- Desktop meny -->
+        <div class="hidden md:flex space-x-4">
+          {#each navigation as nav}
             <button
-                on:click={handleLogin}
-                disabled={isLoading || !username || !password}
-                class="flex w-full items-center justify-center rounded-xl bg-violet-600 px-4 py-3 text-lg font-semibold text-white shadow-md transition-colors hover:bg-violet-700 disabled:bg-violet-300"
+              onclick={() => scrollToSection(nav.id)}
+              class="whitespace-nowrap text-[#1e3a5f] hover:text-orange-700 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-500' : ''}"
             >
-                {#if isLoading}
-                    <svg
-                        class="mr-3 h-5 w-5 animate-spin"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            class="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            stroke-width="4"
-                        ></circle>
-                        <path
-                            class="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                    </svg>
-                    Logger inn...
-                {:else}
-                    Vis min plan
-                {/if}
+              {nav.label}
             </button>
+          {/each}
+        </div>
 
-            <p class="mt-6 text-center text-xs text-gray-500">
-                Treningsdata lastes inn fra en anonymisert fil.
+        <!-- Hamburger knapp (mobil) -->
+        <button 
+          onclick={toggleMenu}
+          class="md:hidden text-[#1e3a5f] hover:text-orange-700 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {#if menuOpen}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            {:else}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            {/if}
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobil meny (dropdown) -->
+      {#if menuOpen}
+        <div class="md:hidden py-4 border-t border-gray-200">
+          {#each navigation as nav}
+            <button
+              onclick={() => closeMenuAndScroll(nav.id)}
+              class="block w-full text-left px-4 py-3 text-[#1e3a5f] hover:bg-orange-50 hover:text-orange-700 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-500 bg-orange-50 rounded-lg' : ''}"
+            >
+              {nav.label}
+            </button>
+          {/each}
+        </div>
+      {/if}
+    </div>
+  </nav>
+
+  <section id="home" class="relative h-screen flex items-center justify-center">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/0 z-10"></div>
+    <img 
+      src="/hero-savalen2.jpg" 
+      alt="Savalen winter landscape" 
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+    <div class="relative z-20 text-center text-white px-4 max-w-4xl">
+      <div class="text-sm uppercase tracking-widest mb-4 text-white">ASKER SKIKLUBB</div>
+      <h1 class="text-4xl md:text-7xl font-bold mb-6">
+        Hovedlandsrennet Savalen 2026
+      </h1>
+      <p class="text-xl md:text-2xl mb-12 text-gray-100">
+        Informasjon om Asker Sk sitt opplegg under Hovedlandsrennet
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>25.02 - 01.03</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Savalen, Hedmark</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span>Asker Skiklubb</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 14l-7 7m0 0l-7-7 7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <section id="omRennet" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-16">
+        <div class="text-center">
+          <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">VELKOMMEN</div>
+          <h2 class="text-3xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Om Hovedlandsrennet</h2>
+        </div>
+        
+        <div class="text-base md:text-xl text-gray-600 max-w-5xl mx-auto">
+          <p class="mb-4">
+            HL er rett rundt hjørne og vi gleder oss til å levere flotte opplevelser for alle. Ønsker å informere om hvorfor HL er et stort arrangement 
+            og hvorfor vi legger inn ekstra ressurser og opplegg rundt dette.
+          </p>
+          
+          <div class:hidden={!visHeleTekstenOmRennet} class="md:block space-y-4">
+            <p>
+              Hovedlandsrennet er et tradisjonsrikt renn hvor skiløpere fra hele landet i alderen 15-16år møtes for å gå skirenn. Dette er først og fremst 
+              en stor opplevelse hvor man deler skiglede og møtes på tvers av alder, kjønn, nivå og bosted. Vi oppfordrer til å skape minner rundt 
+              arrangementet også utenom de individuelle prestasjonene og sette fokus på fellesskapet. Likevel er det ikke å komme utenom at dette 
+              arrangementet også blir sett på som <span class="text-gray-500 font-light italic"> NM </span> og det store målet i løpet av sesongen hos de ivrigste.
             </p>
+            
+            <p>
+              Arrangementet og opplegget vi lager rundt det, oppleves kanskje som litt <span class="text-gray-500 font-light italic"> ekstra </span>. Grunnen til dette og at vi setter inn ekstra ressurser og 
+              opplegg er siden vi ønsker å sette klubb-fellesskapet i fokus, og at alle skal kunne ha like forutsetninger og like godt støtteapparat rundt 
+              seg. Det vil alltid være noen som er ekstra ivrige og andre som tar det mer med <span class="text-gray-500 font-light italic"> ro </span>. For å holde oss samlet som klubb og at opplegget ikke 
+              blir helt fragmentert og individualisert må vi sørge for at alle nivåer/ambisjoner blir ivaretatt. HL er en del av en <span class="text-gray-500 font-light italic"> aldringsprosess </span> hvor 
+              opplegg stadig blir litt og litt mer seriøst frem mot junior og senior nivå hvor man har 4-5 helger med <span class="text-gray-500 font-light italic"> HL-opplegg ++ </span> (Norgescup).
+            </p>
+            
+            <p>
+              Vi håper foreldre kan hjelpe med å senke skuldrene til utøverne. I bunn og grunn er dette et helt vanlig skirenn, bare at opplegget er satt 
+              mer i system og ivaretatt på klubb- og kretsnivå fremfor individuelt nivå.
+            </p>
+            
+            <p>
+              Vi ser frem mot en fantastisk helg!
+            </p>
+          </div>
+          
+          <button
+            onclick={toggleTekstOmRennet}
+            class="md:hidden mt-4 text-orange-500 hover:text-orange-600 font-semibold flex items-center gap-2 mx-auto"
+          >
+            {visHeleTekstenOmRennet ? 'Les mindre' : 'Les mer'}
+            <svg 
+              class="w-4 h-4 transition-transform duration-200" 
+              class:rotate-180={visHeleTekstenOmRennet}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
+      </div>
+      
+      <div class="flex justify-center">        
+        <div class="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-sm max-w-xl w-full">
+          <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-[#1e3a5f] mb-3">Sammen blir vi best</h3>
+          <p class="text-gray-600">
+            Lagånd og samhold står i fokus.
+            Vi alle heier på, og gratulerer hverandre. Sammen utvikler vi oss, og tar steg som klubb.
+            Alle blir igjen på stadion til siste Asker-løper har gått sitt renn ferdig.
+          </p>
+        </div>
+      </div>
     </div>
-{/if}
+  </section>
 
-{#if loggedIn}
-    <div class="min-h-screen bg-slate-50">
-        <div class="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white">
-            <div class="mx-auto max-w-5xl px-4 py-8">
-                <!-- Øverste rad: H1 og Hamburgermeny (PC) / H1 og Hamburgermeny (Mobil) -->
-                <div class="flex justify-between items-center mb-4 sm:mb-6 relative">
-                    <h1 class="text-3xl sm:text-5xl font-bold">TRENINGSPLAN</h1>
-
-                    <!-- Hamburgermeny knapp -->
-                    <button
-                        on:click={toggleMenu}
-                        class="bg-white/20 hover:bg-white/30 p-2 rounded-xl transition-colors relative"
-                        aria-label="Meny"
-                    >
-                        <div class="w-6 h-6 flex flex-col justify-center items-center relative">
-                            <span
-                                class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-600 ease-out"
-                                class:rotate-45={menuOpen}
-                                class:-translate-y-2={!menuOpen}
-                            ></span>
-                            <span
-                                class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-600 ease-out"
-                                class:opacity-0={menuOpen}
-                                class:scale-0={menuOpen}
-                            ></span>
-                            <span
-                                class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-600 ease-out"
-                                class:-rotate-45={menuOpen}
-                                class:translate-y-2={!menuOpen}
-                            ></span>
-                        </div>
-                    </button>
-
-                    <!-- Dropdown meny -->
-                    {#if menuOpen}
-                        <div class="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-2xl border border-violet-200 min-w-[250px] z-50 overflow-hidden">
-                            <div class="py-2">
-                                <div class="px-4 py-2 text-sm font-semibold text-violet-700 border-b border-violet-100">
-                                    Dokumenter
-                                </div>
-                                {#if currentEditPlanSheet}
-                                    <button
-                                        on:click={() => {
-                                            window.open(currentEditPlanSheet, '_blank');
-                                            menuOpen = false;
-                                        }}
-                                        class="w-full text-left px-4 py-3 hover:bg-violet-50 transition-colors text-slate-700 font-medium flex items-center gap-2 border-b border-violet-100"
-                                    >
-                                        <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                        {isAdmin && currentUtoverNavn ? `${currentUtoverNavn} treningsplan (Rediger)` : 'Min treningsplan (Rediger)'}
-                                    </button>
-                                {/if}
-
-                                {#each pdfLinks as link}
-                                    <button
-                                        on:click={() => openPdf(link.url)}
-                                        class="w-full text-left px-4 py-3 hover:bg-violet-50 transition-colors text-slate-700 font-medium flex items-center gap-2"
-                                    >
-                                        <svg class="h-5 w-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                        </svg>
-                                        {link.title}
-                                    </button>
-                                {/each}
-                            </div>
-                        </div>
-                    {/if}
+  <section id="hytter" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">OVERNATTING</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Våre hytter</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Vi har sikret fem private hytter med god beliggenhet og korte avstander til stadion. Det er veldig viktig at man behandler hyttene godt, da de vanligvis ikke er utleieobjekter.
+        </p>
+      </div>
+      
+      <div class="flex flex-wrap justify-center gap-4 md:gap-6">
+        {#each hytter as hytte}
+          <div class="w-full md:w-[48%] lg:w-[32%] bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
+            <div class="p-4 md:p-8 flex-1">
+              <div class="flex items-start justify-between md:mb-4">
+                <h3 class="text-xl md:text-2xl font-bold text-[#1e3a5f]">{hytte.title}</h3>
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
                 </div>
+              </div>
 
-                <!-- Admin søkefelt (hvis admin) -->
-                {#if isAdmin}
-                    <div class="mb-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center w-full">
-                        <div class="flex-1 flex gap-2 w-full">
-                            <input
-                                type="text"
-                                bind:value={currentUtoverNavn}
-                                on:keydown={(e) => {
-                                    if (e.key === "Enter") searchUtoverByName();
-                                }}
-                                placeholder="Søk etter utøvernavn..."
-                                class="flex-1 rounded-full border-0 bg-white/20 px-4 py-2 text-white placeholder-white/60 font-medium focus:bg-white/30 focus:ring-2 focus:ring-white/50"
-                            />
-                            <button
-                                on:click={searchUtoverByName}
-                                disabled={isLoading || !currentUtoverNavn.trim()}
-                                class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                            >
-                                {#if isLoading}
-                                    <svg
-                                        class="h-4 w-4 animate-spin"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <circle
-                                            class="opacity-25"
-                                            cx="12"
-                                            cy="12"
-                                            r="10"
-                                            stroke="currentColor"
-                                            stroke-width="4"
-                                        ></circle>
-                                        <path
-                                            class="opacity-75"
-                                            fill="currentColor"
-                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                        ></path>
-                                    </svg>
-                                {:else}
-                                    <User class="h-4 w-4" />
-                                {/if}
-                                Søk
-                            </button>
-                        </div>
-                    </div>
-
-                    {#if loginError}
-                        <div class="mb-3 rounded-lg bg-red-500/90 p-3 text-sm font-medium text-white">
-                            {loginError}
-                        </div>
-                    {/if}
-                {/if}
-
-                <!-- Logg ut (mobil - over slider) -->
-                <div class="sm:hidden mb-4 flex justify-start">
-                    <button
-                        on:click={handleLogout}
-                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl text-sm font-medium transition-colors flex items-center gap-1"
-                    >
-                        <Lock class="h-4 w-4" /> Logg ut
-                    </button>
+              <div class="space-y-3 mb-4 md:mb-6">
+                <div class="flex items-center gap-3 text-gray-700 text-sm md:text-base">
+                  <svg class="w-5 h-5 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>{hytte.location}</span>
                 </div>
-
-                <!-- Nederste rad: Logg ut (PC) og Slider -->
-                <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4">
-                    <!-- Logg ut (desktop - venstre side) -->
-                    <button
-                        on:click={handleLogout}
-                        class="hidden sm:flex bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl text-sm font-medium transition-colors items-center gap-1"
-                    >
-                        <Lock class="h-4 w-4" /> Logg ut
-                    </button>
-
-                    <!-- Slider (høyre side på PC, full bredde på mobil) -->
-                    <div class="flex justify-end w-full sm:w-auto">
-                        <div
-                            class="relative flex bg-white/15 rounded-full w-full sm:w-[345px]"
-                            style="padding: 0.175rem;">
-                            <div
-                                class="absolute bg-white rounded-full shadow-md transition-all duration-[700ms]"
-                                style={`top: 0.175rem; left: 0.175rem; height: calc(100% - 0.35rem); width: calc(33.333% - 0.38rem); transform: translateX(${
-                                    view === VIEWS.OVERVIEW
-                                        ? "0"
-                                        : view === VIEWS.CALENDAR
-                                        ? "calc(100% + 0.35rem)"
-                                        : "calc(200% + 0.7rem)"
-                                });`}
-                            ></div>
-
-                            <button
-                                on:click={() => (view = VIEWS.OVERVIEW)}
-                                class={`relative z-10 w-1/3 py-2 text-sm font-medium flex items-center justify-center transition-colors ${
-                                    view === VIEWS.OVERVIEW
-                                        ? "text-violet-600"
-                                        : "text-white/80 hover:text-white"
-                                }`}
-                            >
-                                <LineChart class="h-4 w-4 mr-1" /> Oversikt
-                            </button>
-                            <button
-                                on:click={() => (view = VIEWS.CALENDAR)}
-                                class={`relative z-10 w-1/3 py-2 text-sm font-medium flex items-center justify-center transition-colors ${
-                                    view === VIEWS.CALENDAR
-                                        ? "text-violet-600"
-                                        : "text-white/80 hover:text-white"
-                                }`}
-                            >
-                                <Calendar class="h-4 w-4 mr-1" /> Kalender
-                            </button>
-                            <button
-                                on:click={() => (view = VIEWS.TECHNIQUE)}
-                                class={`relative z-10 w-1/3 py-2 text-sm font-medium flex items-center justify-center transition-colors ${
-                                    view === VIEWS.TECHNIQUE
-                                        ? "text-violet-600"
-                                        : "text-white/80 hover:text-white"
-                                }`}
-                                >
-                                    <Video class="h-4 w-4 mr-1" /> Teknikk
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="mx-auto max-w-5xl px-4 py-6 sm:py-8">
-            {#if view === VIEWS.OVERVIEW}
-                <h2 class="mb-3 text-2xl font-semibold">
-                    {#if selectedDate}
-                        {format(selectedDate, "EEEE d. MMMM", { locale: nb })}
-                    {:else}
-                        I dag
-                    {/if}
-                </h2>
-            {/if}
-
-            {#if view === VIEWS.OVERVIEW && activeWorkouts.length > 0}
-                {#each groupByDate(activeWorkouts) as g}
-                    {@const isDoubleSession = g.sessions.length >= 2}
-                    {@const s1Title = g.sessions[0]?.title || "Økt 1"}
-                    {@const s2Title = g.sessions[1]?.title || "Økt 2"}
-                    {@const fellesUtovere1 = getFellesUtovere(g.date, s1Title)}
-                    {@const fellesUtovere2 = isDoubleSession
-                        ? getFellesUtovere(g.date, s2Title)
-                        : []}
-                    {@const uniqueFellesUtovere = Array.from(
-                        new Set([...fellesUtovere1, ...fellesUtovere2]),
-                    )}
-                    {@const totalCount = uniqueFellesUtovere.length}
-                    {@const isRestDay = g.sessions.some((s) =>
-                        s.title.toLowerCase().includes("hvile"),
-                    )}
-
-                    <div class="rounded-2xl border border-violet-500 bg-white shadow-sm mb-3 overflow-hidden">
-                        <div class="bg-violet-50 py-3 border-b border-violet-500">
-                            <p class="text-slate-900 font-semibold text-base sm:text-lg px-4">
-                            <span class="capitalize"> {format(parseISO(g.date), "EEEE", { locale: nb })} </span> {" "} {format(parseISO(g.date), "d.MMMM", { locale: nb })}
-                            </p>
-                        </div>
-                        <div class="p-4">
-                            <div class="mb-1 grid gap-y-5">
-                                {#each g.sessions as s}
-                                    {#key s}
-                                        {#await Promise.resolve(getWorkoutInfo(s.title)) then info}
-                                            <div
-                                                class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 w-full"
-                                            >
-                                                <div
-                                                    class="flex items-stretch gap-3 w-full"
-                                                >
-                                                    <div
-                                                        class={`flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-xl shrink-0 ${info.iconBg ?? "bg-slate-100"}`}
-                                                    >
-                                                        <svelte:component
-                                                            this={info.icon}
-                                                            class={`h-8 w-8 sm:h-6 sm:w-6 ${info.iconColor ?? "text-violet-600"}`}
-                                                        />
-                                                    </div>
-
-                                                    <div
-                                                        class="flex flex-col justify-between w-full min-w-0 h-12 sm:h-13"
-                                                    >
-                                                        <div
-                                                            class="text-slate-800 text-[15px] sm:text-lg font-semibold leading-tight"
-                                                        >
-                                                            {s.title}
-                                                        </div>
-
-                                                        <div
-                                                            class="flex items-center flex-wrap gap-x-1 leading-none mt-[1px]"
-                                                        >
-                                                            <div
-                                                                class={`flex items-center px-2 py-[2px] rounded-full text-[13px] sm:text-[14px] font-medium gap-1 ${info.color} ${info.italic ? "italic" : ""}`}
-                                                            >
-                                                                <svelte:component
-                                                                    this={info.icon}
-                                                                    class="h-[15px] w-[15px]"
-                                                                />
-                                                                {info.label}
-                                                            </div>
-
-                                                            {#if s.durationMin}
-                                                                <div
-                                                                    class="flex items-center text-[13px] sm:text-[14px] text-slate-600 mt-[1px]"
-                                                                >
-                                                                    <Clock
-                                                                        class="inline h-[15px] w-[15px] mr-0.5 text-slate-500"
-                                                                    />
-                                                                    {formatTime(
-                                                                        s.durationMin,
-                                                                    )}
-                                                                </div>
-                                                            {/if}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {/await}
-                                    {/key}
-                                {/each}
-                            </div>
-
-                            {#if g.sessions[0].description}
-                                <p class="mt-3 text-slate-700">
-                                    {g.sessions[0].description}
-                                </p>
-                            {/if}
-
-                            {#if !isRestDay}
-                                <button
-                                    on:click={() => toggleExpanded(g.date)}
-                                    class="mt-3 flex items-center gap-2 text-violet-600 hover:text-violet-700 font-medium text-sm transition-colors w-full"
-                                >
-                                    <Users class="h-4 w-4" />
-                                    {#if totalCount > 0}
-                                        {totalCount}
-                                        {totalCount === 1
-                                            ? "person har"
-                                            : "personer har"} samme økt{isDoubleSession
-                                            ? "er"
-                                            : ""}
-                                    {:else}
-                                        Finner ingen med lik økt
-                                    {/if}
-                                    {#if expandedDates.has(g.date)}
-                                        <ChevronUp class="h-4 w-4 ml-auto" />
-                                    {:else}
-                                        <ChevronDown class="h-4 w-4 ml-auto" />
-                                    {/if}
-                                </button>
-
-                                {#if expandedDates.has(g.date)}
-                                    <div class="mt-2 bg-violet-50 rounded-lg p-3">
-                                        {#if isDoubleSession}
-                                            {#if fellesUtovere1.length > 0}
-                                                <p
-                                                    class="text-sm font-semibold mb-2 text-slate-700"
-                                                >
-                                                    Økt 1:
-                                                </p>
-                                                <div
-                                                    class="flex flex-wrap gap-2 mb-3 pb-3 border-b border-violet-200"
-                                                >
-                                                    {#each fellesUtovere1 as utover}
-                                                        <div
-                                                            class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                        >
-                                                            {utover}
-                                                        </div>
-                                                    {/each}
-                                                </div>
-                                            {:else}
-                                                <p
-                                                    class="text-sm font-semibold mb-2 text-slate-700"
-                                                >
-                                                    Økt 1:
-                                                </p>
-                                                <p
-                                                    class="text-sm text-slate-600 italic mb-3 pb-3 border-b border-violet-200"
-                                                >
-                                                    Ingen andre har denne økten.
-                                                </p>
-                                            {/if}
-
-                                            {#if fellesUtovere2.length > 0}
-                                                <p
-                                                    class="text-sm font-semibold mb-2 text-slate-700"
-                                                >
-                                                    Økt 2:
-                                                </p>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {#each fellesUtovere2 as utover}
-                                                        <div
-                                                            class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                        >
-                                                            {utover}
-                                                        </div>
-                                                    {/each}
-                                                </div>
-                                            {:else}
-                                                <p
-                                                    class="text-sm font-semibold mb-2 text-slate-700"
-                                                >
-                                                    Økt 2:
-                                                </p>
-                                                <p
-                                                    class="text-sm text-slate-600 italic"
-                                                >
-                                                    Ingen andre har denne økten.
-                                                </p>
-                                            {/if}
-                                        {:else if fellesUtovere1.length > 0}
-                                            <div class="flex flex-wrap gap-2">
-                                                {#each fellesUtovere1 as utover}
-                                                    <div
-                                                        class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                    >
-                                                        {utover}
-                                                    </div>
-                                                {/each}
-                                            </div>
-                                        {:else}
-                                            <p
-                                                class="text-sm text-slate-600 italic"
-                                            >
-                                                Ingen andre er satt opp med denne økten.
-                                            </p>
-                                        {/if}
-                                    </div>
-                                {/if}
-                            {/if}
-                        </div>
-                    </div>
+              </div>
+              
+              <p class="text-gray-600 mb-6 font-bold">Ansvarlig: <span class="font-normal italic"> {hytte.responsible} </span> </p>
+              
+              <div class="flex flex-wrap gap-2">
+                {#each hytte.athletes as athlete}
+                  <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs md:text-sm">
+                    {athlete}
+                  </span>
                 {/each}
-            {:else if view === VIEWS.OVERVIEW}
-                <div
-                    class="rounded-2xl border border-dashed border-slate-300 bg-white p-4 text-slate-600"
-                >
-                    Ingen planlagt økt for denne dagen.
+              </div>
+            </div>
+          </div>
+        {/each}
+      </div>
+
+      <div class="mt-16 bg-white p-2 rounded-2xl shadow-lg max-w-4xl mx-auto">
+        <div class="aspect-w-16 aspect-h-9 w-full overflow-hidden rounded-xl bg-gray-100">
+            <iframe 
+                src="https://www.google.com/maps/d/embed?mid=1icimpOVf5iD7aJjyGcPC6xA7XXabHsk&ehbc=2E312F" 
+                class="w-full h-[480px] border-0"
+                title="Kart over hytter"
+                loading="lazy">
+            </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="loypene" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">KONKURRANSELØYPER</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Løypene</h2>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-5">
+        {#each loypene as loype}
+          <div class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-gray-100">
+            <div class="p-4 md:p-8">
+              <div class="flex items-center justify-between mb-1 md:mb-4">
+                <h2 class="text-2xl md:text-4xl font-bold text-[#1e3a5f]">{loype.title}</h2>
+              </div>
+              
+              <p class="text-gray-600 mb-4 md:mb-6">Stilart: {loype.stilart}</p>
+              
+              <div class="flex gap-4">
+                <div class="bg-orange-50 rounded-xl p-2 md:p-4 flex-grow">
+                  <div class="flex items-center gap-2 text-orange-600 mb-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <span class="text-xs font-medium">Distanse</span>
+                  </div>
+                  <div class="text-lg md:text-2xl font-bold text-[#1e3a5f] whitespace-nowrap">{loype.distance}</div>
                 </div>
-            {/if}
 
-            {#if view === VIEWS.OVERVIEW}
-                <div
-                    class="relative mt-6 flex bg-slate-200 rounded-full w-[270px]"
-                    style="padding: 0.175rem;"
+                <button 
+                  onclick={() => openMap(loype.mapUrl)}
+                  class="bg-[#1e3a5f] hover:bg-[#2a5285] text-white rounded-xl p-2 md:p-4 flex flex-col items-center justify-center w-24 transition-colors group"
+                  title="Se løypekart"
                 >
-                    <div
-                        class="absolute bg-violet-600 rounded-full shadow-sm transition-all duration-[700ms] ease-in-out"
-                        style={`top: 0.175rem; left: 0.175rem; height: calc(100% - 0.35rem); width: calc(50% - 0.38rem); transform: translateX(${windowMode === "next" ? "calc(100% + 0.35rem)" : "0"});`}
-                    ></div>
+                  <svg class="w-6 h-6 mb-1 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  <span class="text-xs font-medium">Løypekart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        {/each}
+      </div>
+    </div>
+  </section>
 
-                    <button
-                        on:click={() => (windowMode = "prev")}
-                        class={`relative z-10 w-1/2 text-sm font-medium py-2 transition-all duration-500 ${
-                            windowMode === "prev"
-                                ? "text-white"
-                                : "text-slate-700 hover:text-violet-700"
-                        }`}
-                    >
-                        7 forrige dager
-                    </button>
+  <section id="smoreteam" class="py-20 bg-[#1e3a5f] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">SWIX BESTEMMER - FORELEDRENE UTFØRER</div>
+          <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Smøreteamet</h2>
+        </div>
+          {#if visHeleTekstenRensSki}
+            <div class="text-base md:text-xl text-blue-100  mx-auto space-y-4">
+              <p> Prosessene som utføres under smøreopplegget på hovedlandsrennet er veldig forenklet, slik at man rekker å preppe 
+                  alle ski, og sikre at alle utfører prosessene helt likt. Derfor er det veldig viktig å komme med helt rene ski, 
+                  som både er fri for smuss og skitt, i tillegg til være helt fri for glider. Under HL brukes det som regel kun 
+                  flytende glider, og det kan være en fordel å ha hatt på hard glider (Swix PS6) rett i forkant.
+              </p>
+              
+              <p class="font-semibold">Her er steg for steg hva man bør gjøre før innlevering av ski (om man ønsker å være ekstra nøye):</p>
+              <div class="text-sm">
+                <ol class="list-decimal list-inside space-y-3 text-left mx-auto ">
+                  <li>Fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
+                  <li>La tørke i ca 2min</li>
+                  <li>Børst frem og tilbake med hvit stiv nylonbørste</li>
+                  <li>Ny runde fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
+                  <li>La tørke i ca 2min</li>
+                  <li>Børst med stålbørste kun i fartsretning</li>
+                  <li>Ny runde fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
+                  <li>La tørke i ca 2min</li>
+                  <li>Børst med hvit stiv nylon kun i fartsretning</li>
+                  <li>Tørk av med tørr fiberlene</li>
+                  <li>Varm inn glider: Swix PS6</li>
+                  <li>La glideren herde og sørg for at den blir kjølig</li>
+                  <li>Sikle skiene med ren og skarp sikle og randsikling</li>
+                  <li>Børst med stålbørste i fartsretning</li>
+                  <li>Børst deretter med hestehår i fartsretning. Viktig at det ikke skal være noe som helst spor igjen av glider når man er ferdig børstet.</li>
+                </ol>
+              </div>
+              <p>
+                Mange ulike varianter av børster og prosesser man kan velge mellom. Jeg og mange andre bruker kun stålbørste og hestehår 
+                (ikke nylon) etter gliderprosess. Man kan fint gå over med nylon helt til slutt om man synes det er trygt.
+              </p>
+    
+              <p class="text-white font-semibold bg-orange-500/30 p-4 rounded-lg mt-10">
+                NB! Merk skiene tydelig med navn og smøresoner før innlevering av ski. Rennskia må være uten festesmurning og glider. 
+                De bør ikke ha blitt brukt til annet enn testing før de leveres inn.
+              </p>
+            </div>
+          {/if}
 
-                    <button
-                        on:click={() => (windowMode = "next")}
-                        class={`relative z-10 w-1/2 text-sm font-medium py-2 transition-all duration-500 ${
-                            windowMode === "next"
-                                ? "text-white"
-                                : "text-slate-700 hover:text-violet-700"
-                        }`}
-                    >
-                        7 neste dager
-                    </button>
+          <button onclick={toggleTekstRensSki} class="mt-4 mb-4 text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-2 mx-auto"> {visHeleTekstenRensSki ? 'Les mindre' : 'Klargjøring av ski og rens før innlevering'}
+            <svg class="w-4 h-4 transition-transform duration-200" class:rotate-180={visHeleTekstenRensSki} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+        <div class="flex flex-col gap-8">
+          <div class="max-w-md">
+            <label for="dagSelect" class="block text-base font-medium mb-2">Velg dag:</label>
+            <select 
+              id="dagSelect"
+              bind:value={valgtDag}
+              class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 text-white text-lg font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent cursor-pointer hover:bg-white/20 transition-colors"
+            >
+              {#each smoreDager as dagData}
+                <option value={dagData.dag} class="bg-[#1e3a5f] text-white">{dagData.dag}</option>
+              {/each}
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 md:flex md:flex-wrap gap-3 md:gap-6">
+            {#each smoreDager.find(d => d.dag === valgtDag)?.personell || [] as person}
+              <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-white/20 transition-colors md:flex-1 md:min-w-[calc(33.333%-1rem)]">
+                <div class="w-8 h-8 md:w-12 md:h-12 {person.rolle === 'Logistikk' ? 'bg-pink-500' : 'bg-orange-500'} rounded-lg flex items-center justify-center mb-3 md:mb-4 shadow-lg">
+                  <svg class="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
                 </div>
-            {/if}
+                <h3 class="text-sm md:text-xl font-bold mb-2">{person.navn}</h3>
+                <div class="space-y-1">
+                  <p class="{person.rolle === 'Logistikk' ? 'text-pink-300' : 'text-orange-300'} text-xs md:text-sm font-semibold uppercase tracking-wider">{person.rolle}</p>
+                    <div class="flex items-center gap-2 text-gray-300 text-sm md:text-base mt-2">
+                      <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
 
-            {#if view === VIEWS.OVERVIEW}
-                <h3 class="mt-4 mb-6 text-xl font-semibold">
-                    {windowMode === "next"
-                        ? "Kommende økter"
-                        : "Tidligere økter"}
-                </h3>
-
-                {#if windowWorkouts.length === 0}
-                    <div
-                        class="border border-dashed border-slate-300 rounded-xl p-6 text-slate-600"
-                    >
-                        Ingen økter i valgt periode.
-                    </div>
-                {:else}
-                    {#each groupByDate(windowWorkouts) as g}
-                        {@const isDoubleSession = g.sessions.length >= 2}
-                        {@const s1Title = g.sessions[0]?.title || "Økt 1"}
-                        {@const s2Title = g.sessions[1]?.title || "Økt 2"}
-                        {@const fellesUtovere1 = getFellesUtovere(
-                            g.date,
-                            s1Title,
-                        )}
-                        {@const fellesUtovere2 = isDoubleSession
-                            ? getFellesUtovere(g.date, s2Title)
-                            : []}
-                        {@const uniqueFellesUtovere = Array.from(
-                            new Set([...fellesUtovere1, ...fellesUtovere2]),
-                        )}
-                        {@const totalCount = uniqueFellesUtovere.length}
-                        {@const isRestDay = g.sessions.some((s) =>
-                            s.title.toLowerCase().includes("hvile"),
-                        )}
-
-                        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm mb-6 overflow-hidden">
-                            <div class="bg-violet-50 py-3">
-                                <p class="text-slate-900 font-semibold text-base sm:text-lg px-4">
-                                    <span class="capitalize"> {format(parseISO(g.date), "EEEE", { locale: nb })} </span> {" "} {format(parseISO(g.date), "d.MMMM", { locale: nb })}
-                                </p>
-                            </div>
-
-                            <div class="p-4">
-                                <div class="mb-1 grid gap-y-5">
-                                    {#each g.sessions as s}
-                                        {#key s}
-                                            {#await Promise.resolve(getWorkoutInfo(s.title)) then info}
-                                                <div
-                                                    class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 w-full"
-                                                >
-                                                    <div
-                                                        class="flex items-stretch gap-3 w-full"
-                                                    >
-                                                        <div
-                                                            class={`flex items-center justify-center w-13 h-13 sm:w-12 sm:h-12 rounded-xl shrink-0 ${info.iconBg ?? "bg-slate-100"}`}
-                                                        >
-                                                            <svelte:component
-                                                                this={info.icon}
-                                                                class={`h-8 w-8 sm:h-6 sm:w-6 ${info.iconColor ?? "text-violet-600"}`}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            class="flex flex-col justify-between w-full min-w-0 h-13 sm:h-12"
-                                                        >
-                                                            <div
-                                                                class="text-slate-800 text-[15px] sm:text-lg font-semibold leading-tight"
-                                                            >
-                                                                {s.title}
-                                                            </div>
-
-                                                            <div
-                                                                class="flex items-center flex-wrap gap-x-1 leading-none mt-[1px]"
-                                                            >
-                                                                <div
-                                                                    class={`flex items-center px-2 py-[2px] rounded-full text-[13px] sm:text-[14px] font-medium gap-1 ${info.color} ${info.italic ? "italic" : ""}`}
-                                                                >
-                                                                    <svelte:component
-                                                                        this={info.icon}
-                                                                        class="h-[15px] w-[15px]"
-                                                                    />
-                                                                    {info.label}
-                                                                </div>
-
-                                                                {#if s.durationMin}
-                                                                    <div
-                                                                        class="flex items-center text-[13px] sm:text-[14px] text-slate-600 mt-[1px]"
-                                                                    >
-                                                                        <Clock
-                                                                            class="inline h-[15px] w-[15px] mr-0.5 text-slate-500"
-                                                                        />
-                                                                        {formatTime(
-                                                                            s.durationMin,
-                                                                        )}
-                                                                    </div>
-                                                                {/if}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {/await}
-                                        {/key}
-                                    {/each}
-                                </div>
-                            
-
-                                {#if g.sessions[0].description}
-                                    <p class="mt-3 text-slate-700">
-                                        {g.sessions[0].description}
-                                    </p>
-                                {/if}
-
-                                {#if !isRestDay}
-                                    <button
-                                        on:click={() => toggleExpanded(g.date)}
-                                        class="mt-3 flex items-center gap-2 text-violet-600 hover:text-violet-700 font-medium text-sm transition-colors w-full"
-                                    >
-                                        <Users class="h-4 w-4" />
-                                        {#if totalCount > 0}
-                                            {totalCount}
-                                            {totalCount === 1
-                                                ? "person har"
-                                                : "personer har"} samme økt{isDoubleSession
-                                                ? "er"
-                                                : ""}
-                                        {:else}
-                                            Finner ingen med lik økt
-                                        {/if}
-                                        {#if expandedDates.has(g.date)}
-                                            <ChevronUp class="h-4 w-4 ml-auto" />
-                                        {:else}
-                                            <ChevronDown class="h-4 w-4 ml-auto" />
-                                        {/if}
-                                    </button>
-
-                                    {#if expandedDates.has(g.date)}
-                                        <div
-                                            class="mt-2 bg-violet-50 rounded-lg p-3"
-                                        >
-                                            {#if isDoubleSession}
-                                                {#if fellesUtovere1.length > 0}
-                                                    <p
-                                                        class="text-sm font-semibold mb-2 text-slate-700"
-                                                    >
-                                                        Økt 1:
-                                                    </p>
-                                                    <div
-                                                        class="flex flex-wrap gap-2 mb-3 pb-3 border-b border-violet-200"
-                                                    >
-                                                        {#each fellesUtovere1 as utover}
-                                                            <div
-                                                                class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                            >
-                                                                {utover}
-                                                            </div>
-                                                        {/each}
-                                                    </div>
-                                                {:else}
-                                                    <p
-                                                        class="text-sm font-semibold mb-2 text-slate-700"
-                                                    >
-                                                        Økt 1:
-                                                    </p>
-                                                    <p
-                                                        class="text-sm text-slate-600 italic mb-3 pb-3 border-b border-violet-200"
-                                                    >
-                                                        Ingen andre har denne økten.
-                                                    </p>
-                                                {/if}
-
-                                                {#if fellesUtovere2.length > 0}
-                                                    <p
-                                                        class="text-sm font-semibold mb-2 text-slate-700"
-                                                    >
-                                                        Økt 2:
-                                                    </p>
-                                                    <div
-                                                        class="flex flex-wrap gap-2"
-                                                    >
-                                                        {#each fellesUtovere2 as utover}
-                                                            <div
-                                                                class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                            >
-                                                                {utover}
-                                                            </div>
-                                                        {/each}
-                                                    </div>
-                                                {:else}
-                                                    <p
-                                                        class="text-sm font-semibold mb-2 text-slate-700"
-                                                    >
-                                                        Økt 2:
-                                                    </p>
-                                                    <p
-                                                        class="text-sm text-slate-600 italic"
-                                                    >
-                                                        Ingen andre har denne økten.
-                                                    </p>
-                                                {/if}
-                                            {:else if fellesUtovere1.length > 0}
-                                                <div class="flex flex-wrap gap-2">
-                                                    {#each fellesUtovere1 as utover}
-                                                        <div
-                                                            class="bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 border border-violet-200"
-                                                        >
-                                                            {utover}
-                                                        </div>
-                                                    {/each}
-                                                </div>
-                                            {:else}
-                                                <p
-                                                    class="text-sm text-slate-600 italic"
-                                                >
-                                                    Ingen andre er satt opp med denne økten.
-                                                </p>
-                                            {/if}
-                                        </div>
-                                    {/if}
-                                {/if}
-                            </div>
-                        </div>
-                    {/each}
-                {/if}
-            {/if}
-
-            {#if view === VIEWS.TECHNIQUE}
-                <div class="mt-8 mb-12 mx-auto max-w-6xl px-1 sm:px-4">
-                    <h2
-                        class="mb-6 text-3xl font-bold text-center text-violet-700"
-                    >
-                        Teknikkvideoer
-                    </h2>
-
-                    <div class="space-y-4">
-                        <!-- Klassisk -->
-                        <details
-                            class="group bg-white rounded-2xl shadow-lg border border-violet-500 overflow-hidden"
-                        >
-                            <summary
-                                class="cursor-pointer px-6 py-4 text-xl font-bold text-violet-700 hover:bg-violet-50 group-open:bg-violet-50 transition-colors flex items-center justify-between"
-                            >
-                                Klassisk
-                                <ChevronDown
-                                    class="h-5 w-5 transition-transform group-open:rotate-180 duration-700 ease-out"
-                                />
-                            </summary>
-
-                            <div class="px-1 sm:px-6 pb-6 space-y-4">
-                                <!-- Diagonal -->
-                                <details class="group/sub bg-white rounded-2xl mt-4 overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Diagonal
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/Z2oNfG4eulQ?si=K3hgPIcHR19j3CUx"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/NNR6YpFA7Jw?si=i19W-qDQ-Rv-4TDG" 
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-
-                                <!-- Staking -->
-                                <details class="group/sub bg-white rounded-2xl overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Staking
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/D_hlp-buPhA?si=dDlDK1h5lWddEDzN"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/MYVK4agNPcE?si=5L52ljY36n9Z1MZH"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-
-                                <!-- Dobbeltak med fraspark -->
-                                <details class="group/sub bg-white rounded-2xl overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Dobbeltak med fraspark
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/7SZn1vDG_WY?si=obHl2RpMR8ByMgfz"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-                            </div>
-                        </details>
-
-                        <!-- Skøyting -->
-                        <details
-                            class="group bg-white rounded-2xl shadow-lg border border-violet-500 overflow-hidden"
-                        >
-                            <summary
-                                class="cursor-pointer px-6 py-4 text-xl font-bold text-violet-700 hover:bg-violet-50 group-open:bg-violet-50 transition-colors flex items-center justify-between"
-                            >
-                                Skøyting
-                                <ChevronDown
-                                    class="h-5 w-5 transition-transform group-open:rotate-180 duration-700 ease-out"
-                                />
-                            </summary>
-
-                            <div class="0 sm:px-6 pb-6 space-y-4">
-                                <!-- Dobbeldans -->
-                                <details class="group/sub bg-white rounded-2xl mt-4 overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Dobbeldans
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/PlFkOEr7bw0?si=qVwizVGKQVB6ixoA"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/G-vIb6gzYRk?si=I7mpCV1p-j7vSKv_" 
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-
-                                <!-- Padling -->
-                                <details class="group/sub bg-white rounded-2xl overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Padling
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/Z6ynMU7KixA?si=Av9HKthu8O9wEXGm"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/-eWpFQ9rDos?si=7QZpyucS4EGulPl7" 
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-
-                                <!-- Enkeldans -->
-                                <details class="group/sub bg-white rounded-2xl overflow-hidden">
-                                    <summary class="cursor-pointer px-2 sm:px-4 py-3 text-lg font-semibold text-violet-700 hover:bg-violet-50 group-open/sub:bg-violet-50 transition-colors flex items-center gap-2 rounded-xl">
-                                        Enkeldans
-                                            <ChevronDown class="h-5 w-5 stroke-[2.5] transition-transform group-open/sub:rotate-180 duration-700 ease-out" />
-                                    </summary>
-                                        <div class="p-1 sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/8PLC-KWs4c0?si=pk7x-OE3AfzP6xfh" 
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            class="bg-white rounded-xl shadow overflow-hidden"
-                                        >
-                                            <div class="aspect-video">
-                                                <iframe
-                                                    class="w-full h-full"
-                                                    src="https://www.youtube.com/embed/QWZp2WVukkY?si=LTEtEeruo-R8zkWa"
-                                                    title="YouTube video player"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                    allowfullscreen
-                                                ></iframe>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </details>
-                            </div>
-                        </details>
+                      <a
+                        href={`tel:${person.tlf}`}
+                        class="underline hover:text-white"
+                      >
+                        {person.tlf}
+                      </a>
                     </div>
                 </div>
-            {/if}
+              </div>
+            {/each}
+          </div>
+        </div>
+    </div>
+  </section>
+
+  <section id="rennprogram" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">DETTE ER TIDSPUNKTENE DU MÅ FORHOLDE DEG TIL</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Rennprogram</h2>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Torsdag - 26.02</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">12.00 - 16.00 - Offisiell trening sprint/distanse</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">14.00 - 16.00 - Offisiell trening langrennscross</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Fredag - 27.02</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">09.00 - Sprint prolog jenter og gutter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">11.30 - Kvartfinaler</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">12.50 - Semifinaler</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">13.20 - Finaler</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">14.00 - Langrennscross</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">16.15 - Premieutdeling kombicross, sprint og langrennscross</span>
+            </li>
+          </ul>
         </div>
 
-        {#if view === VIEWS.CALENDAR}
-            <div class="mt-8 mb-12 mx-auto max-w-6xl px-4">
-                <div
-                    class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3 sm:gap-0"
-                >
-                    <h3 class="text-2xl font-bold text-center sm:text-left">
-                        {format(calendarCursor, "LLLL yyyy", { locale: nb })}
-                    </h3>
-
-                    <div class="flex justify-center sm:justify-end gap-2">
-                        <button
-                            on:click={goToToday}
-                            class="border rounded-xl px-3 py-2 text-sm hover:bg-violet-50"
-                        >
-                            I dag
-                        </button>
-                        <button
-                            on:click={() => changeMonth("prev")}
-                            class="border rounded-xl p-2"
-                        >
-                            <ChevronLeft class="h-4 w-4" />
-                        </button>
-                        <button
-                            on:click={() => changeMonth("next")}
-                            class="border rounded-xl p-2"
-                        >
-                            <ChevronRight class="h-4 w-4" />
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="grid grid-cols-7 gap-2 text-center text-sm text-slate-600"
-                >
-                    {#each ["man", "tir", "ons", "tor", "fre", "lør", "søn"] as d}
-                        <div>{d}</div>
-                    {/each}
-                </div>
-
-                <div class="mt-2 grid grid-cols-7 gap-2">
-                    {#each days as d}
-                        {#if d}
-                            <button
-                                class={`relative rounded-xl border p-2 pt-8 text-left bg-white hover:bg-violet-50 transition-colors ${
-                                    isSameDay(d, activeDate)
-                                        ? "border-violet-500"
-                                        : "border-slate-200"
-                                }`}
-                                on:click={() => selectDay(d)}
-                            >
-                                <div
-                                    class="absolute top-1 left-1 flex items-start justify-start"
-                                >
-                                    <div
-                                        class="hidden sm:flex w-7 h-7 rounded-full bg-violet-600 text-white text-xs font-semibold items-center justify-center shadow-sm"
-                                    >
-                                        {format(d, "d")}
-                                    </div>
-
-                                    <div
-                                        class="text-sm font-medium text-center sm:hidden"
-                                    >
-                                        {format(d, "d")}
-                                    </div>
-                                </div>
-
-                                {#await Promise.all(workouts
-                                        .filter((w) => w.date === format(d, "yyyy-MM-dd"))
-                                        .map( (w) => getWorkoutInfo(w.title), )) then infos}
-                                    {#if infos.length > 0}
-                                        <div
-                                            class="flex sm:hidden mt-1 flex-wrap gap-1"
-                                        >
-                                            {#each infos.slice(0, 3) as info, idx (idx)}
-                                                <div
-                                                    class="w-3 h-3 rounded-full shadow-sm"
-                                                    style={`background-color: ${
-                                                        info.color.includes(
-                                                            "bg-red-100",
-                                                        )
-                                                            ? "#ff0000"
-                                                            : info.color.includes(
-                                                                    "bg-yellow-100",
-                                                                )
-                                                              ? "#ffff00"
-                                                              : info.color.includes(
-                                                                      "bg-green-100",
-                                                                  )
-                                                                ? "#00ff00"
-                                                                : info.color.includes(
-                                                                        "bg-cyan-100",
-                                                                    )
-                                                                  ? "#00ffff"
-                                                                  : "#f9eeff"
-                                                    };`}
-                                                ></div>
-                                            {/each}
-                                            {#if infos.length > 3}
-                                                <div
-                                                    class="w-3 h-3 rounded-full bg-slate-400 shadow-sm"
-                                                ></div>
-                                            {/if}
-                                        </div>
-                                    {/if}
-                                {/await}
-
-                                <div class="hidden sm:block mt-1">
-                                    {#each workouts
-                                        .filter((w) => w.date === format(d, "yyyy-MM-dd"))
-                                        .slice(0, 2) as w}
-                                        {#await Promise.resolve(getWorkoutInfo(w.title)) then info}
-                                            <div
-                                                class={`text-xs ${info.color} px-2 py-0.5 rounded-lg mb-0.5 break-words whitespace-normal font-medium`}
-                                            >
-                                                {w.title}
-                                            </div>
-                                        {/await}
-                                    {/each}
-                                </div>
-                            </button>
-                        {:else}
-                            <div></div>
-                        {/if}
-                    {/each}
-                </div>
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
-        {/if}
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Lørdag - 28.02</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">10.00 - Distanse skøyting, jenter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">12.00 - Premieutdeling jenter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">12.30 - Distanse skøyting, gutter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">15.00 - Premieutdeling gutter</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Søndag - 01.03</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">09.30 - Stafett jenter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">10.45 - Premieutdeling jenter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">11.00 - Stafett gutter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">12.25 - Premieutdeling gutter</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-{/if}
+  </section>
+
+  <section id="praktisk" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">ALT DU TRENGER Å VITE</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Praktisk informasjon</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Her finner du all nødvendig informasjon.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Avreise & Hjemreise</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">Avreise fra Asker onsdag 25. februar</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">Hjemreise søndag etter premieutdeling</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-500" viewBox="0 0 512 512" fill="currentColor">
+                <path d="M207 24v109c0 7-6 13-13 13h-3c-7 0-13-6-13-13V23c0-18-12-23-24-23s-24 5-24 23v110c0 7-6 13-13 13h-3c-7 0-13-6-13-13V24c0-32-46-31-46 0v104c0 58 14 73 36 91 19 15 35 23 35 59v232h55V278c0-36 16-44 35-59 23-18 37-33 37-91V24c0-32-46-33-46 0z"/>
+                <path d="M385 35c-12 33-46 110-48 178-3 106 62 90 63 160v139h55s0 0 0-1c0-9 0-120 0-232 0-111 0-225 0-244 0-40-52-51-70 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Måltider</h3>
+          </div>
+          
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">Frokost og lunsj organiseres innad i hyttene</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700">Middag med to og to hytter</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <span class="text-gray-700"><strong>Hytten som står først lager middagen</strong></span>
+            </li>
+          </ul>
+
+          <!-- Middagsoversikt per dag -->
+          <div class="space-y-4 mt-8">
+            <!-- Onsdag -->
+            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
+                <h4 class="font-bold text-[#1e3a5f]">Onsdag</h4>
+                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <div class="px-4 pb-4 text-gray-700">
+                🚗 Spiser på vei opp
+              </div>
+            </details>
+
+            <!-- Torsdag -->
+            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
+                <h4 class="font-bold text-[#1e3a5f]">Torsdag</h4>
+                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <div class="px-4 pb-4 space-y-2">
+                <div class="text-gray-700">
+                  <strong>Hytte 1</strong> + <strong> Hytte 4 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 2</strong> + <strong> Hytte 3 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 5</strong> spiser alene
+                </div>
+              </div>
+            </details>
+
+            <!-- Fredag -->
+            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
+                <h4 class="font-bold text-[#1e3a5f]">Fredag</h4>
+                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <div class="px-4 pb-4 space-y-2">
+                <div class="text-gray-700">
+                  <strong>Hytte 5</strong> + <strong> Hytte 1 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 3</strong> + <strong> Hytte 4 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 2</strong> spiser alene
+                </div>
+              </div>
+            </details>
+
+            <!-- Lørdag -->
+            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
+                <h4 class="font-bold text-[#1e3a5f]">Lørdag</h4>
+                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <div class="px-4 pb-4 space-y-2">
+                <div class="text-gray-700">
+                  <strong>Hytte 3</strong> + <strong> Hytte 5 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 4</strong> + <strong> Hytte 2 </strong>
+                </div>
+                <div class="text-gray-700">
+                  <strong>Hytte 1</strong> spiser alene
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-[#1e3a5f] text-white md:min-h-[500px] lg:min-h-[400px] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        
+        <div>
+          <h4 class="text-xl font-bold mb-6">Lenker</h4>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300">
+            <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Skiforbundet - HL 2026
+            </a></li>
+            <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/parkering/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Parkering stadion
+            </a></li>
+            <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/pamelding/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> iSonen
+            </a></li>
+            <li><a href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Været på Savalen
+            </a></li>
+          </ul>
+        </div>
+
+        <div class="md:flex md:justify-end">
+          <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 w-full max-w-md">
+            <h4 class="text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">Kontakt</h4>
+            <h5 class="text-2xl font-bold mb-1">Rennleder Langrenn:</h5>
+            <p class="text-xl font-bold mb-6">Geir Schjølberg</p>
+            
+            <div class="space-y-4">
+              <a href="mailto:gschjolberg@gmail.com" class="flex items-center gap-3 text-gray-300 hover:text-white group transition-colors">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span class="text-sm md:text-base underline">gschjolberg@gmail.com</span>
+              </a>
+              
+              <a href="tel:+4741853814" class="flex items-center gap-3 text-gray-300 hover:text-white group transition-colors">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <span class="text-sm md:text-base underline">418 53 814</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+</div>
