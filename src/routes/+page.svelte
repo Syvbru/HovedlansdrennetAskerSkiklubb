@@ -91,51 +91,51 @@
     {
       dag: 'Torsdag',
       personell: [
-        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
-        { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264' },
-        { navn: 'Truls Eirik Holm', rolle: 'Logistikk', tlf: '913 28 300' }
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Truls Eirik Holm', rolle: 'Logistikk', tlf: '913 28 300', tidspunkt: '15:00 - 19:00' }
       ]
     },
     {
       dag: 'Fredag',
       personell: [
-        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
-        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471' },
-        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950' },
-        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563' },
-        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058' },
-        { navn: 'Harald Mølmen-Nertun', rolle: 'Logistikk', tlf: '909 37 338' },
-        { navn: 'Siri Bergsmark', rolle: 'Logistikk', tlf: '411 88 151' }
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Siri Bergsmark', rolle: 'Logistikk', tlf: '411 88 151', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '12:00 - 19:00' },
+        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471', tidspunkt: '12:00 - 19:00' },
+        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563', tidspunkt: '12:00 - 19:00' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '12:00 - 19:00' },
+        { navn: 'Harald Mølmen-Nertun', rolle: 'Logistikk', tlf: '909 37 338', tidspunkt: '12:00 - 19:00' },
       ]
     },
     {
       dag: 'Lørdag',
       personell: [
-        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
-        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471' },
-        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950' },
-        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563' },
-        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058' },
-        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919' },
-        { navn: 'Martin Hesselius', rolle: 'Logistikk', tlf: '473 42 463' }
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '08:00 - 13:00' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '08:00 - 13:00' },
+        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471', tidspunkt: '08:00 - 13:00' },
+        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563', tidspunkt: '08:00 - 13:00' },
+        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919', tidspunkt: '08:00 - 13:00' },                
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '14:00 - 19:00' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '14:00 - 19:00' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '14:00 - 19:00' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '14:00 - 19:00' },
+        { navn: 'Martin Hesselius', rolle: 'Logistikk', tlf: '473 42 463', tidspunkt: '14:00 - 19:00' }
       ]
     },
     {
       dag: 'Søndag',
       personell: [
-        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388' },
-        { navn: 'Glenn Phillips', rolle: 'Logistikk', tlf: '464 02 425' }
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Glenn Phillips', rolle: 'Logistikk', tlf: '464 02 425', tidspunkt: '07:00 - 12:00' }
       ]
     }
   ];
@@ -225,7 +225,7 @@
 </script>
 
 <svelte:head>
-  <title>Savalen 2026 - Hovedlandsrennet</title>
+  <title>HL Asker Sk</title>
 </svelte:head>
 
 {#if selectedMap}
@@ -247,20 +247,20 @@
 {/if}
 
 <div class="min-h-screen bg-gray-50">
-  <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm shadow-md z-50">
+  <nav class="fixed top-0 left-0 right-0 bg-white backdrop-blur-sm shadow-md z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
-<button
-  onclick={() => scrollToSection('home')}
-  class="h-10 flex items-center focus:outline-none"
-  aria-label="Gå til toppen"
->
-  <img
-    src="/AskerSkiklubb.svg"
-    alt="Asker Skiklubb HL 2026"
-    class="h-full w-auto"
-  />
-</button>
+        <button
+          onclick={() => scrollToSection('home')}
+          class="h-10 flex items-center focus:outline-none"
+          aria-label="Gå til toppen"
+        >
+          <img
+            src="/AskerSkiklubb.svg"
+            alt="Asker Skiklubb HL 2026"
+            class="h-full w-auto"
+          />
+        </button>
         <!-- Desktop meny -->
         <div class="hidden md:flex space-x-4">
           {#each navigation as nav}
@@ -308,7 +308,7 @@
   <section id="home" class="relative h-screen flex items-center justify-center">
     <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/0 z-10"></div>
     <img 
-      src="/hero-savalen2.jpg" 
+      src="/hero-savalen.jpg" 
       alt="Savalen winter landscape" 
       class="absolute inset-0 w-full h-full object-cover"
     />
@@ -502,7 +502,7 @@
                 <h2 class="text-2xl md:text-4xl font-bold text-[#1e3a5f]">{loype.title}</h2>
               </div>
               
-              <p class="text-gray-600 mb-4 md:mb-6">Stilart: {loype.stilart}</p>
+              <p class="text-orange-600/80 font-bold mb-4 md:mb-6">Stilart: {loype.stilart}</p>
               
               <div class="flex gap-4">
                 <div class="bg-orange-50 rounded-xl p-2 md:p-4 flex-grow">
@@ -609,7 +609,8 @@
                 </div>
                 <h3 class="text-sm md:text-xl font-bold mb-2">{person.navn}</h3>
                 <div class="space-y-1">
-                  <p class="{person.rolle === 'Logistikk' ? 'text-pink-300' : 'text-orange-300'} text-xs md:text-sm font-semibold uppercase tracking-wider">{person.rolle}</p>
+                  <p class="{person.rolle === 'Logistikk' ? 'text-pink-300' : 'text-orange-300'} text-xs md:text-sm font-semibold uppercase tracking-wider">{person.rolle} </p>
+                  <p class="text-xs md:text-sm font-semibold tracking-wider"> kl. {person.tidspunkt}</p>
                     <div class="flex items-center gap-2 text-gray-300 text-sm md:text-base mt-2">
                       <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -815,93 +816,97 @@
               <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
               <span class="text-gray-700">Frokost og lunsj organiseres innad i hyttene</span>
             </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-              <span class="text-gray-700">Middag med to og to hytter</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-              <span class="text-gray-700"><strong>Hytten som står først lager middagen</strong></span>
-            </li>
           </ul>
 
           <!-- Middagsoversikt per dag -->
-          <div class="space-y-4 mt-8">
-            <!-- Onsdag -->
-            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
-              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
-                <h4 class="font-bold text-[#1e3a5f]">Onsdag</h4>
-                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </summary>
-              <div class="px-4 pb-4 text-gray-700">
-                🚗 Spiser på vei opp
-              </div>
-            </details>
+          <div class="bg-orange-50 backdrop-blur-sm rounded-2xl p-4 md:p-6">
+            <ul>
+              <li class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <span class="text-gray-700">Middag med to og to hytter</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <span class="text-gray-700">Hytten som står først lager middagen</span>
+              </li>
+            </ul>
+            <div class="space-y-4 mt-8">
+              <!-- Onsdag -->
+              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+                  <h4 class="font-bold text-[#1e3a5f]">Onsdag</h4>
+                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-4 pb-4 text-gray-700">
+                  🚗 Spiser på vei opp
+                </div>
+              </details>
 
-            <!-- Torsdag -->
-            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
-              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
-                <h4 class="font-bold text-[#1e3a5f]">Torsdag</h4>
-                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </summary>
-              <div class="px-4 pb-4 space-y-2">
-                <div class="text-gray-700">
-                  <strong>Hytte 1</strong> + <strong> Hytte 4 </strong>
+              <!-- Torsdag -->
+              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+                  <h4 class="font-bold text-[#1e3a5f]">Torsdag</h4>
+                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-4 pb-4 space-y-2">
+                  <div class="text-gray-700">
+                    <strong>Hytte 1</strong> + <strong> Hytte 4 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 2</strong> + <strong> Hytte 3 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 5</strong> spiser alene
+                  </div>
                 </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 2</strong> + <strong> Hytte 3 </strong>
-                </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 5</strong> spiser alene
-                </div>
-              </div>
-            </details>
+              </details>
 
-            <!-- Fredag -->
-            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
-              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
-                <h4 class="font-bold text-[#1e3a5f]">Fredag</h4>
-                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </summary>
-              <div class="px-4 pb-4 space-y-2">
-                <div class="text-gray-700">
-                  <strong>Hytte 5</strong> + <strong> Hytte 1 </strong>
+              <!-- Fredag -->
+              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+                  <h4 class="font-bold text-[#1e3a5f]">Fredag</h4>
+                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-4 pb-4 space-y-2">
+                  <div class="text-gray-700">
+                    <strong>Hytte 5</strong> + <strong> Hytte 1 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 3</strong> + <strong> Hytte 4 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 2</strong> spiser alene
+                  </div>
                 </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 3</strong> + <strong> Hytte 4 </strong>
-                </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 2</strong> spiser alene
-                </div>
-              </div>
-            </details>
+              </details>
 
-            <!-- Lørdag -->
-            <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
-              <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
-                <h4 class="font-bold text-[#1e3a5f]">Lørdag</h4>
-                <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </summary>
-              <div class="px-4 pb-4 space-y-2">
-                <div class="text-gray-700">
-                  <strong>Hytte 3</strong> + <strong> Hytte 5 </strong>
+              <!-- Lørdag -->
+              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+                  <h4 class="font-bold text-[#1e3a5f]">Lørdag</h4>
+                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </summary>
+                <div class="px-4 pb-4 space-y-2">
+                  <div class="text-gray-700">
+                    <strong>Hytte 3</strong> + <strong> Hytte 5 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 4</strong> + <strong> Hytte 2 </strong>
+                  </div>
+                  <div class="text-gray-700">
+                    <strong>Hytte 1</strong> spiser alene
+                  </div>
                 </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 4</strong> + <strong> Hytte 2 </strong>
-                </div>
-                <div class="text-gray-700">
-                  <strong>Hytte 1</strong> spiser alene
-                </div>
-              </div>
-            </details>
+              </details>
+            </div>
           </div>
         </div>
       </div>
@@ -921,8 +926,8 @@
             <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/parkering/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Parkering stadion
             </a></li>
-            <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/pamelding/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> iSonen
+            <li><a href="https://isonen.no/event/cmhm68tvl02cdbj01hegjvrjf/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> iSonen - idividuelle øvelser
             </a></li>
             <li><a href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Været på Savalen
