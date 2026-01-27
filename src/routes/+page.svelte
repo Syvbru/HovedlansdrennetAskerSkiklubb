@@ -266,7 +266,7 @@
           {#each navigation as nav}
             <button
               onclick={() => scrollToSection(nav.id)}
-              class="whitespace-nowrap text-[#1e3a5f] hover:text-orange-700 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-500' : ''}"
+              class="whitespace-nowrap text-[#1e3a5f] hover:text-orange-600 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-400' : ''}"
             >
               {nav.label}
             </button>
@@ -276,7 +276,7 @@
         <!-- Hamburger knapp (mobil) -->
         <button 
           onclick={toggleMenu}
-          class="md:hidden text-[#1e3a5f] hover:text-orange-700 transition-colors"
+          class="md:hidden text-[#1e3a5f] hover:text-orange-600 transition-colors"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,7 +295,7 @@
           {#each navigation as nav}
             <button
               onclick={() => closeMenuAndScroll(nav.id)}
-              class="block w-full text-left px-4 py-3 text-[#1e3a5f] hover:bg-orange-50 hover:text-orange-700 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-500 bg-orange-50 rounded-lg' : ''}"
+              class="block w-full text-left px-4 py-3 text-[#1e3a5f] hover:bg-orange-50 hover:text-orange-600 transition-colors text-sm font-medium {currentSection === nav.id ? 'text-orange-400 bg-orange-50 rounded-lg' : ''}"
             >
               {nav.label}
             </button>
@@ -355,7 +355,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-16">
         <div class="text-center">
-          <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">VELKOMMEN</div>
+          <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">VELKOMMEN</div>
           <h2 class="text-3xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Om Hovedlandsrennet</h2>
         </div>
         
@@ -393,7 +393,7 @@
           
           <button
             onclick={toggleTekstOmRennet}
-            class="md:hidden mt-4 text-orange-500 hover:text-orange-600 font-semibold flex items-center gap-2 mx-auto"
+            class="md:hidden mt-4 text-orange-400 hover:text-orange-500 font-semibold flex items-center gap-2 mx-auto"
           >
             {visHeleTekstenOmRennet ? 'Les mindre' : 'Les mer'}
             <svg 
@@ -412,7 +412,7 @@
       <div class="flex justify-center">        
         <div class="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-sm max-w-xl w-full">
           <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>
@@ -430,44 +430,66 @@
   <section id="hytter" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">OVERNATTING</div>
+        <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">OVERNATTING</div>
         <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Våre hytter</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Vi har sikret fem private hytter med god beliggenhet og korte avstander til stadion. Det er veldig viktig at man behandler hyttene godt, da de vanligvis ikke er utleieobjekter.
         </p>
       </div>
       
-      <div class="flex flex-wrap justify-center gap-4 md:gap-6">
-        {#each hytter as hytte}
-          <div class="w-full md:w-[48%] lg:w-[32%] bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
-            <div class="p-4 md:p-8 flex-1">
-              <div class="flex items-start justify-between md:mb-4">
-                <h3 class="text-xl md:text-2xl font-bold text-[#1e3a5f]">{hytte.title}</h3>
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg class="w-5 h-5 md:w-6 md:h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {#each hytter as hytte, i}
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-orange-400">
+            <div class="bg-[#1e3a5f] p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-2xl font-bold text-white">{hytte.title}</h3>
+                <div class="w-10 h-10 rounded-lg bg-orange-200 flex items-center justify-center text-[#1a3654] font-bold">
+                  {i + 1}
                 </div>
               </div>
-
-              <div class="space-y-3 mb-4 md:mb-6">
-                <div class="flex items-center gap-3 text-gray-700 text-sm md:text-base">
-                  <svg class="w-5 h-5 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>{hytte.location}</span>
+            </div>
+            
+            <div class="p-6">
+              <div class="space-y-4">
+                <div>
+                  <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-[#1a3654]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide">Hytteansvarlig</p>
+                      <p class="font-bold text-[#1a3654]">{hytte.responsible}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              
-              <p class="text-gray-600 mb-6 font-bold">Ansvarlig: <span class="font-normal italic"> {hytte.responsible} </span> </p>
-              
-              <div class="flex flex-wrap gap-2">
-                {#each hytte.athletes as athlete}
-                  <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs md:text-sm">
-                    {athlete}
-                  </span>
-                {/each}
+                
+                <div>
+                  <div class="flex items-start gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-[#1a3654]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide">Adresse</p>
+                      <p class="text-gray-700">{hytte.location}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide mb-2">Deltakere</p>
+                  <div class="flex flex-wrap gap-2">
+                    {#each hytte.athletes as athlete}
+                      <span class="px-3 py-1 bg-orange-50 text-[#1a3654] rounded-full text-sm font-medium">
+                        {athlete}
+                      </span>
+                    {/each}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -490,7 +512,7 @@
   <section id="loypene" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">KONKURRANSELØYPER</div>
+        <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">KONKURRANSELØYPER</div>
         <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Løypene</h2>
       </div>
       
@@ -502,11 +524,11 @@
                 <h2 class="text-2xl md:text-4xl font-bold text-[#1e3a5f]">{loype.title}</h2>
               </div>
               
-              <p class="text-orange-600/80 font-bold mb-4 md:mb-6">Stilart: {loype.stilart}</p>
+              <p class="text-orange-500/80 font-bold mb-4 md:mb-6">Stilart: {loype.stilart}</p>
               
               <div class="flex gap-4">
                 <div class="bg-orange-50 rounded-xl p-2 md:p-4 flex-grow">
-                  <div class="flex items-center gap-2 text-orange-600 mb-1">
+                  <div class="flex items-center gap-2 text-orange-500 mb-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
@@ -572,7 +594,7 @@
                 (ikke nylon) etter gliderprosess. Man kan fint gå over med nylon helt til slutt om man synes det er trygt.
               </p>
     
-              <p class="text-white font-semibold bg-orange-500/30 p-4 rounded-lg mt-10">
+              <p class="text-white font-semibold bg-orange-400/30 p-4 rounded-lg mt-10">
                 NB! Merk skiene tydelig med navn og smøresoner før innlevering av ski. Rennskia må være uten festesmurning og glider. 
                 De bør ikke ha blitt brukt til annet enn testing før de leveres inn.
               </p>
@@ -585,24 +607,32 @@
             </svg>
           </button>
 
-        <div class="flex flex-col gap-8">
-          <div class="max-w-md">
-            <label for="dagSelect" class="block text-base font-medium mb-2">Velg dag:</label>
-            <select 
-              id="dagSelect"
-              bind:value={valgtDag}
-              class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 text-white text-lg font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent cursor-pointer hover:bg-white/20 transition-colors"
-            >
-              {#each smoreDager as dagData}
-                <option value={dagData.dag} class="bg-[#1e3a5f] text-white">{dagData.dag}</option>
-              {/each}
-            </select>
+          <div class="relative flex bg-white/15 rounded-full w-full max-w-md mx-auto mb-8" style="padding: 0.175rem;">
+            <div
+              class="absolute bg-white rounded-full shadow-md transition-all duration-[700ms]"
+              style={`top: 0.175rem; left: 0.175rem; height: calc(100% - 0.35rem); width: calc(${100 / smoreDager.length}% - 0.38rem); transform: translateX(calc(${
+                smoreDager.findIndex(d => d.dag === valgtDag) * 100
+              }% + ${smoreDager.findIndex(d => d.dag === valgtDag) * 0.35}rem));`}
+            ></div>
+            {#each smoreDager as dagData}
+              <button
+                onclick={() => (valgtDag = dagData.dag)}
+                class={`relative z-10 py-3 text-sm font-medium flex items-center justify-center transition-colors ${
+                  valgtDag === dagData.dag
+                    ? "text-orange-600"
+                    : "text-white/80 hover:text-white"
+                }`}
+                style={`width: ${100 / smoreDager.length}%;`}
+              >
+                {dagData.dag}
+              </button>
+            {/each}
           </div>
 
           <div class="grid grid-cols-2 md:flex md:flex-wrap gap-3 md:gap-6">
             {#each smoreDager.find(d => d.dag === valgtDag)?.personell || [] as person}
               <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-white/20 transition-colors md:flex-1 md:min-w-[calc(33.333%-1rem)]">
-                <div class="w-8 h-8 md:w-12 md:h-12 {person.rolle === 'Logistikk' ? 'bg-pink-500' : 'bg-orange-500'} rounded-lg flex items-center justify-center mb-3 md:mb-4 shadow-lg">
+                <div class="w-8 h-8 md:w-12 md:h-12 {person.rolle === 'Logistikk' ? 'bg-pink-400' : 'bg-orange-400'} rounded-lg flex items-center justify-center mb-3 md:mb-4 shadow-lg">
                   <svg class="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -621,8 +651,8 @@
                         />
                       </svg>
 
-                      <a
-                        href={`tel:${person.tlf}`}
+                      
+                      <a href={`tel:${person.tlf}`}
                         class="underline hover:text-white"
                       >
                         {person.tlf}
@@ -632,14 +662,13 @@
               </div>
             {/each}
           </div>
-        </div>
     </div>
   </section>
 
   <section id="rennprogram" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">DETTE ER TIDSPUNKTENE DU MÅ FORHOLDE DEG TIL</div>
+        <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">DETTE ER TIDSPUNKTENE DU MÅ FORHOLDE DEG TIL</div>
         <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Rennprogram</h2>
       </div>
       
@@ -647,7 +676,7 @@
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
@@ -656,11 +685,11 @@
           
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">12.00 - 16.00 - Offisiell trening sprint/distanse</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">14.00 - 16.00 - Offisiell trening langrennscross</span>
             </li>
           </ul>
@@ -669,7 +698,7 @@
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
@@ -678,27 +707,27 @@
           
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">09.00 - Sprint prolog jenter og gutter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">11.30 - Kvartfinaler</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">12.50 - Semifinaler</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">13.20 - Finaler</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">14.00 - Langrennscross</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">16.15 - Premieutdeling kombicross, sprint og langrennscross</span>
             </li>
           </ul>
@@ -707,7 +736,7 @@
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
@@ -716,19 +745,19 @@
           
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">10.00 - Distanse skøyting, jenter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">12.00 - Premieutdeling jenter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">12.30 - Distanse skøyting, gutter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">15.00 - Premieutdeling gutter</span>
             </li>
           </ul>
@@ -737,7 +766,7 @@
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
@@ -746,19 +775,19 @@
           
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">09.30 - Stafett jenter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">10.45 - Premieutdeling jenter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">11.00 - Stafett gutter</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">12.25 - Premieutdeling gutter</span>
             </li>
           </ul>
@@ -770,7 +799,7 @@
   <section id="praktisk" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <div class="text-orange-500 uppercase tracking-widest text-sm mb-4">ALT DU TRENGER Å VITE</div>
+        <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">ALT DU TRENGER Å VITE</div>
         <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Praktisk informasjon</h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
           Her finner du all nødvendig informasjon.
@@ -781,7 +810,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
               </svg>
             </div>
@@ -790,11 +819,11 @@
           
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">Avreise fra Asker onsdag 25. februar</span>
             </li>
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">Hjemreise søndag etter premieutdeling</span>
             </li>
           </ul>
@@ -803,7 +832,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-500" viewBox="0 0 512 512" fill="currentColor">
+              <svg class="w-7 h-7 text-orange-400" viewBox="0 0 512 512" fill="currentColor">
                 <path d="M207 24v109c0 7-6 13-13 13h-3c-7 0-13-6-13-13V23c0-18-12-23-24-23s-24 5-24 23v110c0 7-6 13-13 13h-3c-7 0-13-6-13-13V24c0-32-46-31-46 0v104c0 58 14 73 36 91 19 15 35 23 35 59v232h55V278c0-36 16-44 35-59 23-18 37-33 37-91V24c0-32-46-33-46 0z"/>
                 <path d="M385 35c-12 33-46 110-48 178-3 106 62 90 63 160v139h55s0 0 0-1c0-9 0-120 0-232 0-111 0-225 0-244 0-40-52-51-70 0z"/>
               </svg>
@@ -813,29 +842,29 @@
           
           <ul class="space-y-4 mb-8">
             <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">Frokost og lunsj organiseres innad i hyttene</span>
             </li>
           </ul>
 
           <!-- Middagsoversikt per dag -->
-          <div class="bg-orange-50 backdrop-blur-sm rounded-2xl p-4 md:p-6">
+          <div class="border-2 border-orange-100 backdrop-blur-sm rounded-2xl p-4 md:p-6">
             <ul>
               <li class="flex items-start gap-3">
-                <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span class="text-gray-700">Middag med to og to hytter</span>
               </li>
               <li class="flex items-start gap-3">
-                <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
                 <span class="text-gray-700">Hytten som står først lager middagen</span>
               </li>
             </ul>
             <div class="space-y-4 mt-8">
               <!-- Onsdag -->
-              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
-                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+              <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
                   <h4 class="font-bold text-[#1e3a5f]">Onsdag</h4>
-                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-orange-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
@@ -845,10 +874,10 @@
               </details>
 
               <!-- Torsdag -->
-              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
-                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+              <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
                   <h4 class="font-bold text-[#1e3a5f]">Torsdag</h4>
-                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-orange-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
@@ -866,10 +895,10 @@
               </details>
 
               <!-- Fredag -->
-              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
-                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+              <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
                   <h4 class="font-bold text-[#1e3a5f]">Fredag</h4>
-                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-orange-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
@@ -887,10 +916,10 @@
               </details>
 
               <!-- Lørdag -->
-              <details class="group border-l-4 border-orange-400 bg-orange-100 rounded-r-lg overflow-hidden">
-                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-200 transition-colors">
+              <details class="group border-l-4 border-orange-400 bg-orange-50 rounded-r-lg overflow-hidden">
+                <summary class="flex items-center justify-between cursor-pointer p-4 hover:bg-orange-100 transition-colors">
                   <h4 class="font-bold text-[#1e3a5f]">Lørdag</h4>
-                  <svg class="w-5 h-5 text-orange-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-orange-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                   </svg>
                 </summary>
@@ -921,16 +950,16 @@
           <h4 class="text-xl font-bold mb-6">Lenker</h4>
           <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-300">
             <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Skiforbundet - HL 2026
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Skiforbundet - HL 2026
             </a></li>
             <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/parkering/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Parkering stadion
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Parkering stadion
             </a></li>
             <li><a href="https://isonen.no/event/cmhm68tvl02cdbj01hegjvrjf/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> iSonen - idividuelle øvelser
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> iSonen - idividuelle øvelser
             </a></li>
             <li><a href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span> Været på Savalen
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Været på Savalen
             </a></li>
           </ul>
         </div>
@@ -943,7 +972,7 @@
             
             <div class="space-y-4">
               <a href="mailto:gschjolberg@gmail.com" class="flex items-center gap-3 text-gray-300 hover:text-white group transition-colors">
-                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-400 transition-colors">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -952,7 +981,7 @@
               </a>
               
               <a href="tel:+4741853814" class="flex items-center gap-3 text-gray-300 hover:text-white group transition-colors">
-                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-orange-400 transition-colors">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
