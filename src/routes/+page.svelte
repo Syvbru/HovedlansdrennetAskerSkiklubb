@@ -24,7 +24,7 @@
       title: 'HYTTE 2',
       responsible: 'Jens Erik Mortensen',
       location: 'Adresse: Savalodden 49',
-      athletes: ['Emma', 'Alma', 'Lilje', 'Julie', '+ foreldre']
+      athletes: ['Emma', 'Alma', 'Julie', '+ foreldre']
     },
     {
       title: 'HYTTE 3',
@@ -36,7 +36,7 @@
       title: 'HYTTE 4',
       responsible: 'Thomas Tobro Wøien',
       location: 'Adresse: Savalbotn 67',
-      athletes: ['Ida', 'Johanne', 'Ine', '+ foreldre']
+      athletes: ['Ida', 'Johanne', 'Lilje', '+ foreldre']
     },
     {
       title: 'HYTTE 5',
