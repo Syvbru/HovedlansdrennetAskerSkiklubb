@@ -153,6 +153,144 @@
 
   let valgtDag = $state(getDagNavn());
 
+  // Startlister datastruktur
+  const startlister = [
+    {
+      dag: 'Fredag',
+      tittel: 'Sprint Prolog',
+      lopere: [
+        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-27T10:02:30') },
+        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-27T10:05:15') },
+        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-27T10:08:30') },
+        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-27T10:10:00') },
+        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-27T10:13:45') },
+        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-27T10:17:00') },
+        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-27T10:37:45') },
+        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-27T10:39:45') },
+        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-27T10:43:30') },
+        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-27T10:52:30') },
+        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-27T11:12:30') },
+        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-02-27T11:16:15') },
+        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-27T11:19:30') },
+        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-27T11:25:15') },
+        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-27T11:29:15') },
+        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-27T11:33:15') },
+        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-27T11:37:15') },
+        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-27T12:02:30') },
+        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-27T12:15:30') }
+      ]
+    },
+    {
+      dag: 'Lørdag',
+      tittel: 'Distanse',
+      lopere: [
+        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-28T10:02:30') },
+        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-28T10:05:15') },
+        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-28T10:08:30') },
+        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-28T10:10:00') },
+        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-28T10:13:45') },
+        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-28T10:17:00') },
+        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-28T10:37:45') },
+        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-28T10:39:45') },
+        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-28T10:43:30') },
+        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-28T10:52:30') },
+        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-28T11:12:30') },
+        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-02-28T11:16:15') },
+        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-28T11:19:30') },
+        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-28T11:25:15') },
+        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-28T11:29:15') },
+        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-28T11:33:15') },
+        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-28T11:37:15') },
+        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-28T12:02:30') },
+        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-28T12:15:30') }
+      ]
+    },
+    {
+      dag: 'Søndag',
+      tittel: 'Stafett',
+      lopere: [
+        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-03-01T10:02:30') },
+        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-03-01T10:05:15') },
+        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-03-01T10:08:30') },
+        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-03-01T10:10:00') },
+        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-03-01T10:13:45') },
+        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-03-01T10:17:00') },
+        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-03-01T10:37:45') },
+        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-03-01T10:39:45') },
+        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-03-01T10:43:30') },
+        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-03-01T10:52:30') },
+        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-03-01T11:12:30') },
+        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-03-01T11:16:15') },
+        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-03-01T11:19:30') },
+        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-03-01T11:25:15') },
+        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-03-01T11:29:15') },
+        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-03-01T11:33:15') },
+        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-03-01T11:37:15') },
+        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-03-01T12:02:30') },
+        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-03-01T12:15:30') }
+      ]
+    }
+  ];
+
+    const getDagNavnStartliste = () => {
+    const dager = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
+    const idag = new Date().getDay(); // 0 = Søndag, 1 = Mandag, osv.
+    
+    if (idag >= 1 && idag <= 5) {
+      return 'Fredag';
+    }
+    
+    return dager[idag];
+  };
+
+  let valgtStartlistedag = $state(getDagNavnStartliste());
+
+  let currentTime = $state(new Date());
+
+  // Oppdater tid hvert sekund for nedtelling
+  onMount(() => {
+    const interval = setInterval(() => {
+      currentTime = new Date();
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  });
+
+  // Funksjon for å beregne nedtelling
+  function beregnNedtelling(starttid) {
+    const diff = starttid - currentTime;
+    
+    if (diff < 0) return 'Startet';
+    
+    const dager = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const timer = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutter = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const sekunder = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    // Mer enn 24t til start
+    if (diff > 24 * 60 * 60 * 1000) {
+      return `${dager}d ${timer}t`;
+    }
+    // Under 24t men mer enn 5min til start
+    else if (diff > 5 * 60 * 1000) {
+      return `${timer}t ${minutter}m`;
+    }
+    // Under 5min til start
+    else {
+      return `${minutter}m ${sekunder}s`;
+    }
+  }
+
+  const harStartet = (starttid) => {
+    if (!starttid) return false;
+    return currentTime >= starttid;
+  };
+
+  // Funksjon for å formatere starttid
+  function formaterStarttid(dato) {
+    return dato.toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+
   let menuOpen = $state(false);
 
   function toggleMenu() {
@@ -439,11 +577,11 @@
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {#each hytter as hytte, i}
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border-t-4 border-orange-400">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
             <div class="bg-[#1e3a5f] p-4">
               <div class="flex items-center justify-between mb-2">
                 <h3 class="text-2xl font-bold text-white">{hytte.title}</h3>
-                <div class="w-10 h-10 rounded-lg bg-orange-200 flex items-center justify-center text-[#1a3654] font-bold">
+                <div class="w-10 h-10 rounded-lg bg-orange-200 flex items-center justify-center text-[#1e3a5f] font-bold">
                   {i + 1}
                 </div>
               </div>
@@ -454,13 +592,13 @@
                 <div>
                   <div class="flex items-start gap-3 mb-3">
                     <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
-                      <svg class="w-5 h-5 text-[#1a3654]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-[#1e3a5f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
                     <div>
                       <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide">Hytteansvarlig</p>
-                      <p class="font-bold text-[#1a3654]">{hytte.responsible}</p>
+                      <p class="font-bold text-[#1e3a5f]">{hytte.responsible}</p>
                     </div>
                   </div>
                 </div>
@@ -468,7 +606,7 @@
                 <div>
                   <div class="flex items-start gap-3 mb-3">
                     <div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center flex-shrink-0">
-                      <svg class="w-5 h-5 text-[#1a3654]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-[#1e3a5f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
@@ -484,7 +622,7 @@
                   <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide mb-2">Deltakere</p>
                   <div class="flex flex-wrap gap-2">
                     {#each hytte.athletes as athlete}
-                      <span class="px-3 py-1 bg-orange-50 text-[#1a3654] rounded-full text-sm font-medium">
+                      <span class="px-3 py-1 bg-orange-50 text-[#1e3a5f] rounded-full text-sm font-medium">
                         {athlete}
                       </span>
                     {/each}
@@ -665,15 +803,15 @@
     </div>
   </section>
 
-  <section id="rennprogram" class="py-20 bg-white">
+  <section id="rennprogram" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
         <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">DETTE ER TIDSPUNKTENE DU MÅ FORHOLDE DEG TIL</div>
-        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Rennprogram</h2>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Rennprogram & Startlister</h2>
       </div>
       
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -695,7 +833,7 @@
           </ul>
         </div>
         
-        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -733,7 +871,7 @@
           </ul>
         </div>
 
-        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -763,7 +901,7 @@
           </ul>
         </div>
 
-        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -794,9 +932,67 @@
         </div>
       </div>
     </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Slider for valg av dag -->
+      <div class="relative flex bg-[#1e3a5f]/15 rounded-full w-full max-w-md mx-auto mb-8 mt-16" style="padding: 0.175rem;">
+        <div
+          class="absolute bg-[#1e3a5f] rounded-full shadow-md transition-all duration-[700ms]"
+          style={`top: 0.175rem; left: 0.175rem; height: calc(100% - 0.35rem); width: calc(${100 / startlister.length}% - 0.38rem); transform: translateX(calc(${
+            startlister.findIndex(l => l.dag === valgtStartlistedag) * 100
+          }% + ${startlister.findIndex(l => l.dag === valgtStartlistedag) * 0.35}rem));`}
+        ></div>
+        {#each startlister as liste}
+          <button
+            onclick={() => valgtStartlistedag = liste.dag}
+            class={`relative z-10 py-3 text-sm font-medium flex items-center justify-center transition-colors ${
+              valgtStartlistedag === liste.dag
+                ? "text-orange-400"
+                : "text-[#1e3a5f]/80 hover:text-orange-600"
+            }`}
+            style={`width: ${100 / startlister.length}%;`}
+          >
+            {liste.dag}
+          </button>
+        {/each}
+      </div>
+
+      <!-- Startliste innhold -->
+      {#each startlister as liste}
+        {#if valgtStartlistedag === liste.dag}
+          <div class="bg-white rounded-2xl shadow-xl p-2 md:p-8">
+            <div class="mb-6  border-b-2 border-orange-200">
+              <h3 class="p-4 text-2xl md:text-3xl font-bold text-[#1e3a5f]">{liste.tittel}</h3>
+            </div>
+
+            <div class="space-y-3">
+              {#each liste.lopere as loper}
+                <div class="flex items-center justify-between p-3 rounded-xl border-2 {harStartet(loper.starttid) ? 'border-orange-200' : 'border-gray-100'} hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200">
+                  <div class="flex items-center gap-4 flex-1">
+                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : 'bg-blue-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
+                      {loper.startnr}
+                    </div>
+                    <div class="flex-1">
+                      <p class="font-semibold text-[#1e3a5f] text-sm md:text-lg">{loper.navn}</p>
+                      <p class="font-semibold text-sm text-[#1e3a5f] mb-1">Start: {formaterStarttid(loper.starttid)}</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm text-[#1e3a5f]">{loper.klasse}</p>
+                    <p class="text-sm md:text-md font-mono font-semibold text-orange-500">
+                      {beregnNedtelling(loper.starttid)}
+                    </p>
+                  </div>
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/if}
+      {/each}
+    </div>
   </section>
 
-  <section id="praktisk" class="py-20 bg-gray-50">
+  <section id="praktisk" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
         <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">ALT DU TRENGER Å VITE</div>
