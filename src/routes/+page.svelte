@@ -1002,7 +1002,7 @@
       </div>
       
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-white rounded-2xl shadow-lg p-8">
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1024,7 +1024,7 @@
           </ul>
         </div>
         
-        <div class="bg-white rounded-2xl shadow-lg p-8">
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" viewBox="0 0 512 512" fill="currentColor">
