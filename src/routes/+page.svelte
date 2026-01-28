@@ -209,25 +209,24 @@
       dag: 'Søndag',
       tittel: 'Stafett',
       lopere: [
-        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-03-01T10:02:30') },
-        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-03-01T10:05:15') },
-        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-03-01T10:08:30') },
-        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-03-01T10:10:00') },
-        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-03-01T10:13:45') },
-        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-03-01T10:17:00') },
-        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-03-01T10:37:45') },
-        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-03-01T10:39:45') },
-        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-03-01T10:43:30') },
-        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-03-01T10:52:30') },
-        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-03-01T11:12:30') },
-        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-03-01T11:16:15') },
-        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-03-01T11:19:30') },
-        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-03-01T11:25:15') },
-        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-03-01T11:29:15') },
-        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-03-01T11:33:15') },
-        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-03-01T11:37:15') },
-        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-03-01T12:02:30') },
-        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-03-01T12:15:30') }
+        { startnr: 1, navn: 'Alma Strand Bolstad', klasse: 'Lag 1', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 2, navn: 'Emma Hølås Mortensen', klasse: 'Lag 2', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 3, navn: 'Ida Waage-Nielsen', klasse: 'Lag 3', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 4, navn: 'Johanne Lund Wøien', klasse: 'Lag 4', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 5, navn: 'Julie Lyche Svindland', klasse: 'Lag 5', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 6, navn: 'Lilje Mølmen-Nertun', klasse: 'Lag 6', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 7, navn: 'Anna Phillips', klasse: 'Lag 7', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 8, navn: 'Helene Hellerud Øpstad', klasse: 'Lag 8', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 9, navn: 'Julia Hesselius', klasse: 'Lag 9', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 10, navn: 'Nora Bergsmark', klasse: 'Lag 10', starttid: new Date('2026-03-01T09:30:00') },
+        { startnr: 1, navn: 'Adrian Tjensvold', klasse: 'Lag 1', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 2, navn: 'Knut-Erik Holm', klasse: 'Lag 2', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 3, navn: 'Markus Holsing Degerstrøm', klasse: 'Lag 3', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 4, navn: 'Nathaniel Løwø Nordmark', klasse: 'Lag 4', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 5, navn: 'Oscar Befring Mathisen', klasse: 'Lag 5', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 6, navn: 'Storm Windju Christiansen', klasse: 'Lag 6', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 7, navn: 'Emil Hesselius', klasse: 'Lag 7', starttid: new Date('2026-03-01T11:00:00') },
+        { startnr: 8, navn: 'Halvor Stedje Lier', klasse: 'Lag 8', starttid: new Date('2026-03-01T11:00:00') }
       ]
     }
   ];
@@ -969,7 +968,7 @@
               {#each liste.lopere as loper}
                 <div class="flex items-center justify-between p-3 rounded-xl border-2 {harStartet(loper.starttid) ? 'border-orange-200' : 'border-gray-100'} hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200">
                   <div class="flex items-center gap-4 flex-1">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : 'bg-blue-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
+                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : loper.klasse === 'G16' ? 'bg-blue-400' : 'bg-orange-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
                       {loper.startnr}
                     </div>
                     <div class="flex-1">
