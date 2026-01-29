@@ -618,7 +618,7 @@
                 </div>
                 
                 <div>
-                  <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide mb-2">Deltakere</p>
+                  <p class="text-xs text-orange-400 font-semibold uppercase tracking-wide mb-2">Utøvere</p>
                   <div class="flex flex-wrap gap-2">
                     {#each hytte.athletes as athlete}
                       <span class="px-3 py-1 bg-orange-50 text-[#1e3a5f] rounded-full text-sm font-medium">
@@ -769,14 +769,14 @@
           <div class="grid grid-cols-2 md:flex md:flex-wrap gap-3 md:gap-6">
             {#each smoreDager.find(d => d.dag === valgtDag)?.personell || [] as person}
               <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-white/20 transition-colors md:flex-1 md:min-w-[calc(33.333%-1rem)]">
-                <div class="w-8 h-8 md:w-12 md:h-12 {person.rolle === 'Logistikk' ? 'bg-pink-400' : 'bg-orange-400'} rounded-lg flex items-center justify-center mb-3 md:mb-4 shadow-lg">
+                <div class="w-8 h-8 md:w-12 md:h-12 {person.rolle === 'Logistikk' ? 'bg-purple-400' : 'bg-orange-400'} rounded-lg flex items-center justify-center mb-3 md:mb-4 shadow-lg">
                   <svg class="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
                 <h3 class="text-sm md:text-xl font-bold mb-2">{person.navn}</h3>
                 <div class="space-y-1">
-                  <p class="{person.rolle === 'Logistikk' ? 'text-pink-300' : 'text-orange-300'} text-xs md:text-sm font-semibold uppercase tracking-wider">{person.rolle} </p>
+                  <p class="{person.rolle === 'Logistikk' ? 'text-purple-300' : 'text-orange-300'} text-xs md:text-sm font-semibold uppercase tracking-wider">{person.rolle} </p>
                   <p class="text-xs md:text-sm font-semibold tracking-wider"> kl. {person.tidspunkt}</p>
                     <div class="flex items-center gap-2 text-gray-300 text-sm md:text-base mt-2">
                       <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -865,7 +865,7 @@
             </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">16.15 - Premieutdeling kombicross, sprint og langrennscross</span>
+              <span class="text-gray-700">16.15 - Premieutdeling sprint og langrennscross</span>
             </li>
           </ul>
         </div>
@@ -968,7 +968,7 @@
               {#each liste.lopere as loper}
                 <div class="flex items-center justify-between p-3 rounded-xl border-2 {harStartet(loper.starttid) ? 'border-orange-200' : 'border-gray-100'} hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200">
                   <div class="flex items-center gap-4 flex-1">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : loper.klasse === 'G16' ? 'bg-blue-400' : 'bg-orange-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
+                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : loper.klasse === 'G16' ? 'bg-blue-400' : formaterStarttid(loper.starttid) === '09:30:00' ? 'bg-pink-400' : 'bg-blue-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
                       {loper.startnr}
                     </div>
                     <div class="flex-1">
@@ -996,32 +996,26 @@
       <div class="text-center mb-16">
         <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">ALT DU TRENGER Å VITE</div>
         <h2 class="text-4xl md:text-5xl font-bold text-[#1e3a5f] mb-6">Praktisk informasjon</h2>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Her finner du all nødvendig informasjon.
-        </p>
       </div>
       
       <div class="grid md:grid-cols-2 gap-8">
+        
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </div>
-            <h3 class="text-2xl font-bold text-[#1e3a5f]">Avreise & Hjemreise</h3>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">WhatsApp Asker Sk</h3>
           </div>
-          
-          <ul class="space-y-4">
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">Avreise fra Asker onsdag 25. februar</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">Hjemreise søndag etter premieutdeling</span>
-            </li>
-          </ul>
+          <a href="https://chat.whatsapp.com/J0yUqHPB5DPBahd02gYRKo?mode=gi_t" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Lenke til WhatsApp-gruppe
+          </a>
+          <img src="/WhatsAppAsker.jpg" alt="WhatsApp Asker SK" class="w-full rounded-lg mb-4">
         </div>
         
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
@@ -1133,6 +1127,29 @@
             </div>
           </div>
         </div>
+
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Avreise & Hjemreise</h3>
+          </div>
+          
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
+              <span class="text-gray-700">Avreise fra Asker onsdag 25. februar</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
+              <span class="text-gray-700">Hjemreise søndag 1. mars, etter premieutdeling</span>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1155,6 +1172,9 @@
             </a></li>
             <li><a href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Været på Savalen
+            </a></li>
+            <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/kontaktinfo/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Diverse kontaktpersoner
             </a></li>
           </ul>
         </div>
