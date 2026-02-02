@@ -30,7 +30,7 @@
       title: 'HYTTE 3',
       responsible: 'Nina Windju Christiansen',
       location: 'Koordinater: 6917426N 267361Ø',
-      athletes: ['Adrian', 'Knut-Eirik', 'Markus', 'Nathaniel', 'Storm', '+ foreldre']
+      athletes: ['Adrian', 'Markus', 'Nathaniel', 'Storm', '+ foreldre']
     },
     {
       title: 'HYTTE 4',
@@ -170,7 +170,6 @@
         { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-27T10:43:30') },
         { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-27T10:52:30') },
         { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-27T11:12:30') },
-        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-02-27T11:16:15') },
         { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-27T11:19:30') },
         { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-27T11:25:15') },
         { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-27T11:29:15') },
@@ -195,7 +194,6 @@
         { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-28T10:43:30') },
         { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-28T10:52:30') },
         { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-28T11:12:30') },
-        { startnr: 265, navn: 'Knut-Erik Holm', klasse: 'G15', starttid: new Date('2026-02-28T11:16:15') },
         { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-28T11:19:30') },
         { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-28T11:25:15') },
         { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-28T11:29:15') },
@@ -220,7 +218,6 @@
         { startnr: 9, navn: 'Julia Hesselius', klasse: 'Lag 9', starttid: new Date('2026-03-01T09:30:00') },
         { startnr: 10, navn: 'Nora Bergsmark', klasse: 'Lag 10', starttid: new Date('2026-03-01T09:30:00') },
         { startnr: 1, navn: 'Adrian Tjensvold', klasse: 'Lag 1', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 2, navn: 'Knut-Erik Holm', klasse: 'Lag 2', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 3, navn: 'Markus Holsing Degerstrøm', klasse: 'Lag 3', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 4, navn: 'Nathaniel Løwø Nordmark', klasse: 'Lag 4', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 5, navn: 'Oscar Befring Mathisen', klasse: 'Lag 5', starttid: new Date('2026-03-01T11:00:00') },
