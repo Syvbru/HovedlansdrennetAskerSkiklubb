@@ -95,7 +95,7 @@
         { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '15:00 - 19:00' },
         { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '15:00 - 19:00' },
         { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264', tidspunkt: '15:00 - 19:00' },
-        { navn: 'Truls Eirik Holm', rolle: 'Logistikk', tlf: '913 28 300', tidspunkt: '15:00 - 19:00' }
+        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919', tidspunkt: '15:00 - 19:00' },
       ]
     },
     {
