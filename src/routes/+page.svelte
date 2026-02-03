@@ -1025,7 +1025,12 @@
             </div>
             <h3 class="text-2xl font-bold text-[#1e3a5f]">Måltider</h3>
           </div>
-          
+          <a href="/maaltiderSavalen.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Lenke til matplan
+          </a>
           <ul class="space-y-4 mb-8">
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
