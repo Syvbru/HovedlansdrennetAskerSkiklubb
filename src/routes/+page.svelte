@@ -1,5 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import {
+    NotepadText
+  } from "lucide-svelte";
   
   let currentSection = $state('home');
   let selectedMap = $state(null);
@@ -1133,14 +1136,16 @@
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-              </svg>
+              <NotepadText class="w-7 h-7 text-orange-400" />
             </div>
-            <h3 class="text-2xl font-bold text-[#1e3a5f]">Avreise & Hjemreise</h3>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Diverse</h3>
           </div>
           
           <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
+              <span class="text-gray-700"><strong> VIKTIG! </strong> Alle må ha med eget sengetøy, laken og håndkler </span>
+            </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">Avreise fra Asker onsdag 25. februar</span>
