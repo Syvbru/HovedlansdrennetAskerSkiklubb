@@ -59,7 +59,7 @@
     },
     {
       title: 'Skicross',
-      distance: 'Ikke oppgitt',
+      distance: '1140 m',
       stilart: 'Fristil',
       mapUrl: '/skicross-kart.png'
     },
