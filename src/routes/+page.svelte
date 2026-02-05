@@ -1077,10 +1077,10 @@
                 </summary>
                 <div class="px-4 pb-4 space-y-2">
                   <div class="text-gray-700">
-                    <strong>Hytte 1</strong> + <strong> Hytte 4 </strong>
+                    <strong>Hytte 1</strong> + <strong> Hytte 2 </strong>
                   </div>
                   <div class="text-gray-700">
-                    <strong>Hytte 2</strong> + <strong> Hytte 3 </strong>
+                    <strong>Hytte 4</strong> + <strong> Hytte 3 </strong>
                   </div>
                   <div class="text-gray-700">
                     <strong>Hytte 5</strong> spiser alene
@@ -1098,13 +1098,13 @@
                 </summary>
                 <div class="px-4 pb-4 space-y-2">
                   <div class="text-gray-700">
-                    <strong>Hytte 5</strong> + <strong> Hytte 1 </strong>
+                    <strong>Hytte 3</strong> + <strong> Hytte 1 </strong>
                   </div>
                   <div class="text-gray-700">
-                    <strong>Hytte 3</strong> + <strong> Hytte 4 </strong>
+                    <strong>Hytte 5</strong> + <strong> Hytte 2 </strong>
                   </div>
                   <div class="text-gray-700">
-                    <strong>Hytte 2</strong> spiser alene
+                    <strong>Hytte 4</strong> spiser alene
                   </div>
                 </div>
               </details>
@@ -1122,10 +1122,10 @@
                     <strong>Hytte 3</strong> + <strong> Hytte 5 </strong>
                   </div>
                   <div class="text-gray-700">
-                    <strong>Hytte 4</strong> + <strong> Hytte 2 </strong>
+                    <strong>Hytte 1</strong> + <strong> Hytte 4 </strong>
                   </div>
                   <div class="text-gray-700">
-                    <strong>Hytte 1</strong> spiser alene
+                    <strong>Hytte 2</strong> spiser alene
                   </div>
                 </div>
               </details>
