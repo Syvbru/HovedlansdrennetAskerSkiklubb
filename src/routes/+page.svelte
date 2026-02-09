@@ -1193,6 +1193,9 @@
             <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/kontaktinfo/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Diverse kontaktpersoner
             </a></li>
+            <li><a href="https://www.direktesport.no/sport/vintersport/langrenn/hovedlandsrennet-h038vyce" class="hover:text-orange-400 transition-colors flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Direktesport - TV
+            </a></li>
           </ul>
         </div>
 
