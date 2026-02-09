@@ -557,7 +557,7 @@
           <p class="text-gray-600">
             Lagånd og samhold står i fokus.
             Vi alle heier på, og gratulerer hverandre. Sammen utvikler vi oss, og tar steg som klubb.
-            Alle blir igjen på stadion til siste Asker-løper har gått sitt renn ferdig.
+            Det er et ønske at man blir igjen på stadion til siste Asker-løper har gått sitt renn ferdig.
           </p>
         </div>
       </div>
@@ -728,17 +728,18 @@
               </div>
               <p>
                 Mange ulike varianter av børster og prosesser man kan velge mellom. Jeg og mange andre bruker kun stålbørste og hestehår 
-                (ikke nylon) etter gliderprosess. Man kan fint gå over med nylon helt til slutt om man synes det er trygt.
+                (ikke nylon) etter gliderprosess. Man kan fint gå over med nylon helt til slutt om man synes det er trygt. Andre bruker 
+                Hest - Stål - Hest - Nylon, gjør det du føler deg trygg på, og har troen på.
               </p>
     
               <p class="text-white font-semibold bg-orange-400/30 p-4 rounded-lg mt-10">
-                NB! Merk skiene tydelig med navn og smøresoner før innlevering av ski. Rennskia må være uten festesmurning og glider. 
+                NB! Merk skiene tydelig med navn, startnr, klubb og smøresoner før innlevering av ski. Rennskia må være uten festesmurning og glider. 
                 De bør ikke ha blitt brukt til annet enn testing før de leveres inn.
               </p>
             </div>
           {/if}
 
-          <button onclick={toggleTekstRensSki} class="mt-4 mb-4 text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-2 mx-auto"> {visHeleTekstenRensSki ? 'Les mindre' : 'Klargjøring av ski og rens før innlevering'}
+          <button onclick={toggleTekstRensSki} class="mt-4 mb-8 text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-2 mx-auto"> {visHeleTekstenRensSki ? 'Les mindre' : 'Klargjøring av ski og rens før innlevering'}
             <svg class="w-4 h-4 transition-transform duration-200" class:rotate-180={visHeleTekstenRensSki} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -962,6 +963,7 @@
           <div class="bg-white rounded-2xl shadow-xl p-2 md:p-8">
             <div class="mb-6  border-b-2 border-orange-200">
               <h3 class="p-4 text-2xl md:text-3xl font-bold text-[#1e3a5f]">{liste.tittel}</h3>
+              <p class="text-red-400"> NB! Dette er mockupdata, de ekte startlistene blir lagt inn når de er ofisielle fra arrangør </p>
             </div>
 
             <div class="space-y-3">
@@ -1153,6 +1155,15 @@
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
               <span class="text-gray-700">Hjemreise søndag 1. mars, etter premieutdeling</span>
+            </li>
+            <li>
+              <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
+              <a href="/infoPresentasjon.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Lenke til pesentasjon infomøte
+              </a>
             </li>
           </ul>
         </div>
