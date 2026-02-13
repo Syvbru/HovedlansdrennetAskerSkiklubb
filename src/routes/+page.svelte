@@ -1017,6 +1017,8 @@
               class="w-full h-[500px] border-0 rounded-lg"
               title="Værvarsel for Savalen"
               loading="lazy"
+transform: scale(0.8);
+          transform-origin: 0 0;
             ></iframe>
             
             <a 
