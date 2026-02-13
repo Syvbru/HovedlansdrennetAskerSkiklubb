@@ -1222,9 +1222,6 @@
             <li><a href="https://isonen.no/event/cmkpin5qh06flaf01vtc3m8lg/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> iSonen - Stafett - Frist 22.02
             </a></li>
-            <li><a href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" class="hover:text-orange-400 transition-colors flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Været på Savalen
-            </a></li>
             <li><a href="https://www.skiforbundet.no/arrangement/2025-2026/hl2026/kontaktinfo/" class="hover:text-orange-400 transition-colors flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-orange-400 rounded-full"></span> Diverse kontaktpersoner
             </a></li>
