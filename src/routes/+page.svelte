@@ -1001,39 +1001,37 @@
       </div>
       
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-gray-50 rounded-2xl shadow-lg p-8 sm:p-8 p-0">
-  <!-- Overskrift med padding på mobil -->
-  <div class="flex items-center gap-4 mb-6 px-6 sm:px-0">
-    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-      <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-      </svg>
-    </div>
-    <h3 class="text-2xl font-bold text-[#1e3a5f]">Været på Savalen</h3>
-  </div>
-  
-  <!-- Værmelding uten padding på mobil -->
-  <div class="bg-white sm:rounded-xl sm:p-4 sm:border border-gray-200 rounded-none p-0 border-y">
-    <iframe 
-      src="https://www.yr.no/nb/innhold/1-179688/table.html" 
-      class="w-full h-[500px] border-0 sm:rounded-lg"
-      title="Værvarsel for Savalen"
-      loading="lazy"
-    ></iframe>
-    
-    <a 
-      href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      class="inline-flex items-center mt-4 gap-2 text-blue-600 hover:text-blue-700 font-medium px-6 sm:px-0"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-      </svg>
-      Se detaljert værvarsel på yr.no
-    </a>
-  </div>
-</div>
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Været på Savalen</h3>
+          </div>
+          
+          <div class="bg-white rounded-xl p-4 border border-gray-200">
+            <iframe 
+              src="https://www.yr.no/nb/innhold/1-179688/table.html" 
+              class="w-full h-[500px] border-0 rounded-lg"
+              title="Værvarsel for Savalen"
+              loading="lazy"
+            ></iframe>
+            
+            <a 
+              href="https://www.yr.no/nb/værvarsel/daglig-tabell/1-522579/Norge/Innlandet/Tynset/Savalen" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="inline-flex items-center mt-4 gap-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Se detaljert værvarsel på yr.no
+            </a>
+          </div>
+        </div>
         <div class="bg-gray-50 rounded-2xl shadow-lg p-8">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
