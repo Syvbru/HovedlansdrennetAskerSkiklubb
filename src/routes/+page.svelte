@@ -1014,11 +1014,9 @@
           <div class="bg-white rounded-xl p-4 border border-gray-200">
             <iframe 
               src="https://www.yr.no/nb/innhold/1-179688/table.html" 
-              class="w-full h-[500px] border-0 rounded-lg"
+              class="w-full h-[500px] border-0 scale-[0.8] rounded-lg"
               title="Værvarsel for Savalen"
               loading="lazy"
-transform: scale(0.8);
-          transform-origin: 0 0;
             ></iframe>
             
             <a 
