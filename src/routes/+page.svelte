@@ -1036,6 +1036,27 @@
         </div>
         <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
           <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Sanntidstemperatur</h3>
+          </div>
+          
+          <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div class="w-full h-[350px] overflow-hidden">
+              <iframe 
+                src="https://weathermap.netatmo.com/?stationid=70:ee:50:83:aa:80&zoom=13.758905565503637" 
+                class="w-[200%] h-[700px] border-0 scale-[0.5] origin-top-left"
+                title="Sanntidstemperatur"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
+          <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
               <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
