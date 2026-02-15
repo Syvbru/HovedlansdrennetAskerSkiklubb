@@ -1047,7 +1047,7 @@
           <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div class="w-full h-[350px] overflow-hidden">
               <iframe 
-                src="https://weathermap.netatmo.com/?stationid=70:ee:50:04:b8:38&zoom=13.758905565503637" 
+                src="https://weathermap.netatmo.com/?lat=62.311324&lon=10.541866&zoom=13.758905565503637" 
                 class="w-[200%] h-[700px] border-0 scale-[0.5] origin-top-left"
                 title="Sanntidstemperatur"
                 loading="lazy"
