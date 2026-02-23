@@ -33,7 +33,7 @@
       title: 'HYTTE 3',
       responsible: 'Nina Windju Christiansen',
       location: 'Koordinater: 6917426N 267361Ø',
-      athletes: ['Adrian', 'Markus', 'Nathaniel', 'Storm', '+ foreldre']
+      athletes: ['Adrian', 'Nathaniel', 'Storm', '+ foreldre']
     },
     {
       title: 'HYTTE 4',
@@ -94,23 +94,20 @@
     {
       dag: 'Torsdag',
       personell: [
-        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '15:00 - 19:00' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '15:00 - 19:00' },
         { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '15:00 - 19:00' },
-        { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264', tidspunkt: '15:00 - 19:00' },
         { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919', tidspunkt: '15:00 - 19:00' },
       ]
     },
     {
       dag: 'Fredag',
       personell: [
-        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Siri Bergsmark', rolle: 'Logistikk', tlf: '411 88 151', tidspunkt: '07:00 - 12:00' },
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '06:00 - 12:00' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '06:00 - 12:00' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '06:00 - 12:00' },
+        { navn: 'Siri Bergsmark', rolle: 'Logistikk', tlf: '411 88 151', tidspunkt: '06:00 - 12:00' },
         { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '12:00 - 19:00' },
-        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471', tidspunkt: '12:00 - 19:00' },
         { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563', tidspunkt: '12:00 - 19:00' },
         { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '12:00 - 19:00' },
         { navn: 'Harald Mølmen-Nertun', rolle: 'Logistikk', tlf: '909 37 338', tidspunkt: '12:00 - 19:00' },
@@ -119,26 +116,26 @@
     {
       dag: 'Lørdag',
       personell: [
-        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '08:00 - 13:00' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '08:00 - 13:00' },
-        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471', tidspunkt: '08:00 - 13:00' },
-        { navn: 'Jens Erik Mortensen', rolle: 'Smører', tlf: '470 50 563', tidspunkt: '08:00 - 13:00' },
-        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919', tidspunkt: '08:00 - 13:00' },                
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '14:00 - 19:00' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '14:00 - 19:00' },
-        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '14:00 - 19:00' },
-        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '14:00 - 19:00' },
-        { navn: 'Martin Hesselius', rolle: 'Logistikk', tlf: '473 42 463', tidspunkt: '14:00 - 19:00' }
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '07:00 - 13:00' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '07:00 - 13:00' },
+        { navn: 'Thomas Tobro Wøien', rolle: 'Smører', tlf: '905 42 471', tidspunkt: '07:00 - 13:00' },
+        { navn: 'Endre Tjensvold', rolle: 'Logistikk', tlf: '929 95 919', tidspunkt: '07:00 - 13:00' },                
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Audun Foss Knudsen', rolle: 'Smører', tlf: '945 38 058', tidspunkt: '15:00 - 19:00' },
+        { navn: 'Martin Hesselius', rolle: 'Logistikk', tlf: '473 42 463', tidspunkt: '15:00 - 19:00' }
       ]
     },
     {
       dag: 'Søndag',
       personell: [
-        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Anders Svindland', rolle: 'Smører', tlf: '951 02 504', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '07:00 - 12:00' },
-        { navn: 'Glenn Phillips', rolle: 'Logistikk', tlf: '464 02 425', tidspunkt: '07:00 - 12:00' }
+        { navn: 'Thomas Strand', rolle: 'Smører', tlf: '930 85 464', tidspunkt: '06:00 - 08:30' },
+        { navn: 'Andre Waage-Nielsen', rolle: 'Smører', tlf: '484 03 126', tidspunkt: '06:00 - 08:30' },
+        { navn: 'Anders Øpstad', rolle: 'Smører', tlf: '472 36 388', tidspunkt: '06:00 - 08:30' },
+        { navn: 'Glenn Phillips', rolle: 'Logistikk', tlf: '464 02 425', tidspunkt: '06:00 - 12:00' },
+        { navn: 'Nina Windju Christiansen', rolle: 'Smører', tlf: '930 43 264', tidspunkt: '08:30 - 12:00' },
+        { navn: 'Rangvald Lier', rolle: 'Smører', tlf: '412 15 485', tidspunkt: '08:30 - 12:00' },
+        { navn: 'Petter Mathisen', rolle: 'Smører', tlf: '905 97 950', tidspunkt: '08:30 - 12:00' }
       ]
     }
   ];
@@ -173,7 +170,6 @@
         { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-27T10:43:30') },
         { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-27T10:52:30') },
         { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-27T11:12:30') },
-        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-27T11:19:30') },
         { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-27T11:25:15') },
         { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-27T11:29:15') },
         { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-27T11:33:15') },
@@ -197,7 +193,6 @@
         { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-28T10:43:30') },
         { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-28T10:52:30') },
         { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-28T11:12:30') },
-        { startnr: 278, navn: 'Markus Holsing Degerstrøm', klasse: 'G15', starttid: new Date('2026-02-28T11:19:30') },
         { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-28T11:25:15') },
         { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-28T11:29:15') },
         { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-28T11:33:15') },
@@ -221,7 +216,6 @@
         { startnr: 9, navn: 'Julia Hesselius', klasse: 'Lag 9', starttid: new Date('2026-03-01T09:30:00') },
         { startnr: 10, navn: 'Nora Bergsmark', klasse: 'Lag 10', starttid: new Date('2026-03-01T09:30:00') },
         { startnr: 1, navn: 'Adrian Tjensvold', klasse: 'Lag 1', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 3, navn: 'Markus Holsing Degerstrøm', klasse: 'Lag 3', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 4, navn: 'Nathaniel Løwø Nordmark', klasse: 'Lag 4', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 5, navn: 'Oscar Befring Mathisen', klasse: 'Lag 5', starttid: new Date('2026-03-01T11:00:00') },
         { startnr: 6, navn: 'Storm Windju Christiansen', klasse: 'Lag 6', starttid: new Date('2026-03-01T11:00:00') },
@@ -914,19 +908,19 @@
           <ul class="space-y-4">
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">09.30 - Stafett jenter</span>
+              <span class="text-gray-700">09.00 - Stafett jenter</span>
             </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">10.45 - Premieutdeling jenter</span>
+              <span class="text-gray-700">10.15 - Premieutdeling jenter</span>
             </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">11.00 - Stafett gutter</span>
+              <span class="text-gray-700">10.30 - Stafett gutter</span>
             </li>
             <li class="flex items-start gap-3">
               <div class="w-2 h-2 bg-orange-400 rounded-full mt-2"></div>
-              <span class="text-gray-700">12.25 - Premieutdeling gutter</span>
+              <span class="text-gray-700">11.55 - Premieutdeling gutter</span>
             </li>
           </ul>
         </div>
@@ -1001,6 +995,7 @@
       </div>
       
       <div class="grid md:grid-cols-2 gap-8">
+        
         <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -1034,6 +1029,7 @@
             </a>
           </div>
         </div>
+
         <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -1043,7 +1039,6 @@
             </div>
             <h3 class="text-2xl font-bold text-[#1e3a5f]">Sanntidstemperatur</h3>
           </div>
-          
           <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div class="w-full h-[350px] overflow-hidden">
               <iframe 
@@ -1055,6 +1050,24 @@
             </div>
           </div>
         </div>
+
+        <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 6l6-2v14l-6 2V6z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 4l6 2v14l-6-2V4z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 6l6-2v14l-6 2V6z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">Arenakart</h3>
+          </div>
+          <img src="/arenakart.png" alt="Arenakart Savalen stadio" class="w-full rounded-lg mb-4">
+        </div>
+
         <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center">
@@ -1062,13 +1075,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </div>
-            <h3 class="text-2xl font-bold text-[#1e3a5f]">WhatsApp Asker Sk</h3>
+            <h3 class="text-2xl font-bold text-[#1e3a5f]">WhatsApp grupper</h3>
           </div>
           <a href="https://chat.whatsapp.com/J0yUqHPB5DPBahd02gYRKo?mode=gi_t" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
-            Lenke til WhatsApp-gruppe
+            Lenke til WhatsApp-gruppe <span class="text-blue-400">Asker Sk </span>
+          </a>
+          <a href="https://chat.whatsapp.com/K6zLIuO6jeMLn2Pkq9Bzm7?mode=gi_t" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Lenke til WhatsApp-gruppe <span class="text-violet-500">Arrangør </span>
           </a>
           <img src="/WhatsAppAsker.jpg" alt="WhatsApp Asker SK" class="w-full rounded-lg mb-4">
         </div>
