@@ -1065,7 +1065,7 @@
             </div>
             <h3 class="text-2xl font-bold text-[#1e3a5f]">Arenakart</h3>
           </div>
-          <img src="/arenakart.png" alt="Arenakart Savalen stadio" class="w-full rounded-lg mb-4">
+          <img src="/arenakart.png" alt="Arenakart Savalen stadion" class="w-full rounded-lg mb-4">
         </div>
 
         <div class="bg-gray-50 rounded-2xl shadow-lg p-4">
