@@ -159,23 +159,23 @@
       dag: 'Fredag',
       tittel: 'Sprint Prolog',
       lopere: [
-        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-27T10:02:30') },
-        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-27T10:05:15') },
-        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-27T10:08:30') },
-        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-27T10:10:00') },
-        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-27T10:13:45') },
-        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-27T10:17:00') },
-        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-27T10:37:45') },
-        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-27T10:39:45') },
-        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-27T10:43:30') },
-        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-27T10:52:30') },
-        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-27T11:12:30') },
-        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-27T11:25:15') },
-        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-27T11:29:15') },
-        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-27T11:33:15') },
-        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-27T11:37:15') },
-        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-27T12:02:30') },
-        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-27T12:15:30') }
+        { startnr: 105, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-27T09:00:50') },
+        { startnr: 150, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-27T09:08:20') },
+        { startnr: 159, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-27T09:09:50') },
+        { startnr: 168, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-27T09:11:20') },
+        { startnr: 189, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-27T09:14:50') },
+        { startnr: 212, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-27T09:18:40') },
+        { startnr: 291, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-27T09:33:50') },
+        { startnr: 310, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-27T09:37:00') },
+        { startnr: 334, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-27T09:41:00') },
+        { startnr: 342, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-27T09:42:20') },
+        { startnr: 367, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-27T09:48:30') },
+        { startnr: 375, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-27T09:49:50') },
+        { startnr: 380, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-27T09:50:40') },
+        { startnr: 400, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-27T09:54:00') },
+        { startnr: 475, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-27T10:06:30') },
+        { startnr: 538, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-27T10:19:00') },
+        { startnr: 624, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-27T10:33:20') }
       ]
     },
     {
@@ -298,15 +298,6 @@
     }
     visHeleTekstenOmRennet = !visHeleTekstenOmRennet;
   }
-
-  let visHeleTekstenRensSki = $state(false);
-  
-  function toggleTekstRensSki() {
-    if (visHeleTekstenRensSki) {
-      scrollToSection('smoreteam');
-    }
-    visHeleTekstenRensSki = !visHeleTekstenRensSki;
-  }   
 
   function closeMenuAndScroll(sectionId) {
     menuOpen = false;
@@ -691,54 +682,13 @@
         <div class="text-center">
           <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">SWIX BESTEMMER - FORELEDRENE UTFØRER</div>
           <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Smøreteamet</h2>
-        </div>
-          {#if visHeleTekstenRensSki}
-            <div class="text-base md:text-xl text-blue-100  mx-auto space-y-4">
-              <p> Prosessene som utføres under smøreopplegget på hovedlandsrennet er veldig forenklet, slik at man rekker å preppe 
-                  alle ski, og sikre at alle utfører prosessene helt likt. Derfor er det veldig viktig å komme med helt rene ski, 
-                  som både er fri for smuss og skitt, i tillegg til være helt fri for glider. Under HL brukes det som regel kun 
-                  flytende glider, og det kan være en fordel å ha hatt på hard glider (Swix PS6) rett i forkant.
-              </p>
-              
-              <p class="font-semibold">Her er steg for steg hva man bør gjøre før innlevering av ski (om man ønsker å være ekstra nøye):</p>
-              <div class="text-sm">
-                <ol class="list-decimal list-inside space-y-3 text-left mx-auto ">
-                  <li>Fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
-                  <li>La tørke i ca 2min</li>
-                  <li>Børst frem og tilbake med hvit stiv nylonbørste</li>
-                  <li>Ny runde fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
-                  <li>La tørke i ca 2min</li>
-                  <li>Børst med stålbørste kun i fartsretning</li>
-                  <li>Ny runde fiberlene med gliderrens (ikke bruk gliderrens i festesonen)</li>
-                  <li>La tørke i ca 2min</li>
-                  <li>Børst med hvit stiv nylon kun i fartsretning</li>
-                  <li>Tørk av med tørr fiberlene</li>
-                  <li>Varm inn glider: Swix PS6</li>
-                  <li>La glideren herde og sørg for at den blir kjølig</li>
-                  <li>Sikle skiene med ren og skarp sikle og randsikling</li>
-                  <li>Børst med stålbørste i fartsretning</li>
-                  <li>Børst deretter med hestehår i fartsretning. Viktig at det ikke skal være noe som helst spor igjen av glider når man er ferdig børstet.</li>
-                </ol>
-              </div>
-              <p>
-                Mange ulike varianter av børster og prosesser man kan velge mellom. Jeg og mange andre bruker kun stålbørste og hestehår 
-                (ikke nylon) etter gliderprosess. Man kan fint gå over med nylon helt til slutt om man synes det er trygt. Andre bruker 
-                Hest - Stål - Hest - Nylon, gjør det du føler deg trygg på, og har troen på.
-              </p>
-    
-              <p class="text-white font-semibold bg-orange-400/30 p-4 rounded-lg mt-10">
-                NB! Merk skiene tydelig med navn, startnr, klubb og smøresoner før innlevering av ski. Rennskia må være uten festesmurning og glider. 
-                De bør ikke ha blitt brukt til annet enn testing før de leveres inn.
-              </p>
-            </div>
-          {/if}
-
-          <button onclick={toggleTekstRensSki} class="mt-4 mb-8 text-orange-400 hover:text-orange-300 font-semibold flex items-center gap-2 mx-auto"> {visHeleTekstenRensSki ? 'Les mindre' : 'Klargjøring av ski og rens før innlevering'}
-            <svg class="w-4 h-4 transition-transform duration-200" class:rotate-180={visHeleTekstenRensSki} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          <a href="https://docs.google.com/spreadsheets/d/1_eRf2qEvh-ruCvQ2_IuZW_w3Uyww9b_U/edit?usp=drivesdk&ouid=112930001381926163636&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
-          </button>
-
+            Lenke til matplan
+          </a>
+        </div>
           <div class="relative flex bg-white/15 rounded-full w-full max-w-md mx-auto mb-8" style="padding: 0.175rem;">
             <div
               class="absolute bg-white rounded-full shadow-md transition-all duration-[700ms]"
@@ -957,7 +907,7 @@
           <div class="bg-white rounded-2xl shadow-xl p-2 md:p-8">
             <div class="mb-6  border-b-2 border-orange-200">
               <h3 class="p-4 text-2xl md:text-3xl font-bold text-[#1e3a5f]">{liste.tittel}</h3>
-              <p class="text-red-400"> NB! Dette er mockupdata, de ekte startlistene blir lagt inn når de er ofisielle fra arrangør </p>
+              <p class="text-[#1e3a5f]"> NB! Kun fredagens startlister er riktig </p>
             </div>
 
             <div class="space-y-3">
