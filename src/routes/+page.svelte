@@ -682,11 +682,11 @@
         <div class="text-center">
           <div class="text-orange-400 uppercase tracking-widest text-sm mb-4">SWIX BESTEMMER - FORELEDRENE UTFØRER</div>
           <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Smøreteamet</h2>
-          <a href="https://docs.google.com/spreadsheets/d/1_eRf2qEvh-ruCvQ2_IuZW_w3Uyww9b_U/edit?usp=drivesdk&ouid=112930001381926163636&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mb-6 gap-2 text-green-600 hover:text-green-700 font-medium">
+          <a href="https://docs.google.com/spreadsheets/d/1_eRf2qEvh-ruCvQ2_IuZW_w3Uyww9b_U/edit?usp=drivesdk&ouid=112930001381926163636&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" class="inline-flex items-center mb-6 gap-2 text-orange-400 hover:text-green-700 font-medium">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
-            Lenke til matplan
+            Lenke til regnearket
           </a>
         </div>
           <div class="relative flex bg-white/15 rounded-full w-full max-w-md mx-auto mb-8" style="padding: 0.175rem;">
