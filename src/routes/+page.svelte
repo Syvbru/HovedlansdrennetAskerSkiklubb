@@ -181,25 +181,25 @@
     {
       dag: 'Lørdag',
       tittel: 'Distanse',
-      lopere: [
-        { startnr: 10, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-28T10:02:30') },
-        { startnr: 21, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-28T10:05:15') },
-        { startnr: 34, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-28T10:08:30') },
-        { startnr: 40, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-28T10:10:00') },
-        { startnr: 55, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-28T10:13:45') },
-        { startnr: 68, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-28T10:17:00') },
-        { startnr: 131, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-28T10:37:45') },
-        { startnr: 139, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-28T10:39:45') },
-        { startnr: 154, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-28T10:43:30') },
-        { startnr: 190, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-28T10:52:30') },
-        { startnr: 250, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-28T11:12:30') },
-        { startnr: 301, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-28T11:25:15') },
-        { startnr: 317, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-28T11:29:15') },
-        { startnr: 333, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-28T11:33:15') },
-        { startnr: 349, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-28T11:37:15') },
-        { startnr: 460, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-28T12:02:30') },
-        { startnr: 512, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-28T12:15:30') }
-      ]
+        lopere: [
+          { startnr: 107, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-28T10:01:45') },
+          { startnr: 126, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-28T10:07:15') },
+          { startnr: 165, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-28T10:16:15') },
+          { startnr: 178, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-28T10:19:30') },
+          { startnr: 209, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-28T10:27:15') },
+          { startnr: 226, navn: 'Ida Waage-Nielsen', klasse: 'J15', starttid: new Date('2026-02-28T10:31:30') },
+          { startnr: 232, navn: 'Anna Phillips', klasse: 'J16', starttid: new Date('2026-02-28T10:38:00') },
+          { startnr: 277, navn: 'Helene Hellerud Øpstad', klasse: 'J16', starttid: new Date('2026-02-28T10:49:15') },
+          { startnr: 281, navn: 'Nora Bergsmark', klasse: 'J16', starttid: new Date('2026-02-28T10:50:15') },
+          { startnr: 301, navn: 'Julia Hesselius', klasse: 'J16', starttid: new Date('2026-02-28T10:55:15') },
+          { startnr: 409, navn: 'Adrian Tjensvold', klasse: 'G15', starttid: new Date('2026-02-28T12:12:30') },
+          { startnr: 446, navn: 'Storm Windju Christiansen', klasse: 'G15', starttid: new Date('2026-02-28T12:21:45') },
+          { startnr: 493, navn: 'Oscar Befring Mathisen', klasse: 'G15', starttid: new Date('2026-02-28T12:33:30') },
+          { startnr: 506, navn: 'Nathaniel Løwø Nordmark', klasse: 'G15', starttid: new Date('2026-02-28T12:36:45') },
+          { startnr: 512, navn: 'Sondre Mauroy Knudsen', klasse: 'G15', starttid: new Date('2026-02-28T12:38:15') },
+          { startnr: 564, navn: 'Emil Hesselius', klasse: 'G16', starttid: new Date('2026-02-28T12:56:15') },
+          { startnr: 575, navn: 'Halvor Stedje Lier', klasse: 'G16', starttid: new Date('2026-02-28T12:59:00') }
+        ]
     },
     {
       dag: 'Søndag',
@@ -907,7 +907,7 @@
           <div class="bg-white rounded-2xl shadow-xl p-2 md:p-8">
             <div class="mb-6  border-b-2 border-orange-200">
               <h3 class="p-4 text-2xl md:text-3xl font-bold text-[#1e3a5f]">{liste.tittel}</h3>
-              <p class="text-[#1e3a5f]"> NB! Kun fredagens startlister er riktig </p>
+              <p class="text-[#1e3a5f]"> NB! Fredag og Lørdagens startlister er riktig </p>
             </div>
 
             <div class="space-y-3">
