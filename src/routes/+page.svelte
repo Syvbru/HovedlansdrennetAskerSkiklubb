@@ -205,22 +205,22 @@
       dag: 'Søndag',
       tittel: 'Stafett',
       lopere: [
-        { startnr: 1, navn: 'Alma Strand Bolstad', klasse: 'Lag 1', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 9, navn: 'Emma Hølås Mortensen', klasse: 'Lag 9', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 1, navn: 'Ida Waage-Nielsen', klasse: 'Lag 1', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 3, navn: 'Johanne Lund Wøien', klasse: 'Lag 3', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 2, navn: 'Julie Lyche Svindland', klasse: 'Lag 5', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 7, navn: 'Lilje Mølmen-Nertun', klasse: 'Lag 2', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 3, navn: 'Anna Phillips', klasse: 'Lag 3', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 4, navn: 'Helene Hellerud Øpstad', klasse: 'Lag 8', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 7, navn: 'Julia Hesselius', klasse: 'Lag 7', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 5, navn: 'Nora Bergsmark', klasse: 'Lag 5', starttid: new Date('2026-03-01T09:30:00') },
-        { startnr: 2, navn: 'Adrian Tjensvold', klasse: 'Lag 2', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 10, navn: 'Nathaniel Løwø Nordmark', klasse: 'Lag 10', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 2, navn: 'Oscar Befring Mathisen', klasse: 'Lag 2', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 4, navn: 'Storm Windju Christiansen', klasse: 'Lag 4', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 9, navn: 'Emil Hesselius', klasse: 'Lag 9', starttid: new Date('2026-03-01T11:00:00') },
-        { startnr: 3, navn: 'Halvor Stedje Lier', klasse: 'Lag 3', starttid: new Date('2026-03-01T11:00:00') }
+        { startnr: 1, navn: 'Alma Strand Bolstad', klasse: 'Lag 1', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 9, navn: 'Emma Hølås Mortensen', klasse: 'Lag 9', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 1, navn: 'Ida Waage-Nielsen', klasse: 'Lag 1', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 3, navn: 'Johanne Lund Wøien', klasse: 'Lag 3', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 2, navn: 'Julie Lyche Svindland', klasse: 'Lag 5', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 7, navn: 'Lilje Mølmen-Nertun', klasse: 'Lag 2', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 3, navn: 'Anna Phillips', klasse: 'Lag 3', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 4, navn: 'Helene Hellerud Øpstad', klasse: 'Lag 8', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 7, navn: 'Julia Hesselius', klasse: 'Lag 7', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 5, navn: 'Nora Bergsmark', klasse: 'Lag 5', starttid: new Date('2026-03-01T09:00:00') },
+        { startnr: 2, navn: 'Adrian Tjensvold', klasse: 'Lag 2', starttid: new Date('2026-03-01T10:30:00') },
+        { startnr: 10, navn: 'Nathaniel Løwø Nordmark', klasse: 'Lag 10', starttid: new Date('2026-03-01T10:30:00') },
+        { startnr: 2, navn: 'Oscar Befring Mathisen', klasse: 'Lag 2', starttid: new Date('2026-03-01T10:30:00') },
+        { startnr: 4, navn: 'Storm Windju Christiansen', klasse: 'Lag 4', starttid: new Date('2026-03-01T10:30:00') },
+        { startnr: 9, navn: 'Emil Hesselius', klasse: 'Lag 9', starttid: new Date('2026-03-01T10:30:00') },
+        { startnr: 3, navn: 'Halvor Stedje Lier', klasse: 'Lag 3', starttid: new Date('2026-03-01T10:30:00') }
       ]
     }
   ];
