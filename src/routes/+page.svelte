@@ -907,14 +907,14 @@
           <div class="bg-white rounded-2xl shadow-xl p-2 md:p-8">
             <div class="mb-6  border-b-2 border-orange-200">
               <h3 class="p-4 text-2xl md:text-3xl font-bold text-[#1e3a5f]">{liste.tittel}</h3>
-              <p class="text-[#1e3a5f]"> NB! Fredag og Lørdagens startlister er riktig </p>
+              <p class="text-[#1e3a5f]"> Alle startlister er nå riktig! </p>
             </div>
 
             <div class="space-y-3">
               {#each liste.lopere as loper}
                 <div class="flex items-center justify-between p-3 rounded-xl border-2 {harStartet(loper.starttid) ? 'border-orange-200' : 'border-gray-100'} hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200">
                   <div class="flex items-center gap-4 flex-1">
-                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : loper.klasse === 'G16' ? 'bg-blue-400' : formaterStarttid(loper.starttid) === '09:30:00' ? 'bg-pink-400' : 'bg-blue-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
+                    <div class="w-9 h-9 md:w-12 md:h-12 rounded-full {loper.klasse === 'J15' ? 'bg-pink-200' : loper.klasse === 'J16' ? 'bg-pink-400' : loper.klasse === 'G15' ? 'bg-blue-200' : loper.klasse === 'G16' ? 'bg-blue-400' : formaterStarttid(loper.starttid) === '09:00:00' ? 'bg-pink-400' : 'bg-blue-400'} flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-md">
                       {loper.startnr}
                     </div>
                     <div class="flex-1">
