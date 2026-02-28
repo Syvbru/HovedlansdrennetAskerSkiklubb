@@ -183,7 +183,7 @@
       tittel: 'Distanse',
         lopere: [
           { startnr: 107, navn: 'Lilje Mølmen-Nertun', klasse: 'J15', starttid: new Date('2026-02-28T10:01:45') },
-          { startnr: 126, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-28T10:07:15') },
+          { startnr: 129, navn: 'Johanne Lund Wøien', klasse: 'J15', starttid: new Date('2026-02-28T10:07:15') },
           { startnr: 165, navn: 'Alma Strand Bolstad', klasse: 'J15', starttid: new Date('2026-02-28T10:16:15') },
           { startnr: 178, navn: 'Julie Lyche Svindland', klasse: 'J15', starttid: new Date('2026-02-28T10:19:30') },
           { startnr: 209, navn: 'Emma Hølås Mortensen', klasse: 'J15', starttid: new Date('2026-02-28T10:27:15') },
